@@ -152,7 +152,7 @@ const Orders = () => {
 
   return (
     <>
-      <Helmet><title>Orders — YULO Admin</title></Helmet>
+      <Helmet><title>Orders — Vibhaa Jewellery Admin</title></Helmet>
       <PageHeader title="Orders" subtitle="Manage and track customer orders" />
 
       <div className="mb-3 d-flex flex-wrap gap-2">

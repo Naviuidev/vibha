@@ -1,35 +1,29 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PLACEHOLDER_IMAGES } from '../../utils/constants';
-import { resolveMediaUrl } from '../../utils/helpers';
+import { getStoredJson, resolveMediaUrl, setStoredJson } from '../../utils/helpers';
 import api from '../../services/api';
 
-const FALLBACK = [
-  {
-    id: 'f1',
-    title: 'Signature Sunglasses',
-    image: PLACEHOLDER_IMAGES[0],
-    link: '/shop',
-    cta_text: 'Shop Now →',
-  },
-  {
-    id: 'f2',
-    title: 'Sunglasses',
-    image: PLACEHOLDER_IMAGES[1],
-    link: '/shop',
-    cta_text: null,
-  },
-  {
-    id: 'f3',
-    title: 'Optical',
-    image: PLACEHOLDER_IMAGES[2],
-    link: '/shop',
-    cta_text: null,
-  },
-];
+const FEATURED_CACHE_KEY = 'vibhaa.featuredCollections';
+
+function mapFeatured(rows) {
+  return (Array.isArray(rows) ? rows : [])
+    .map((r) => ({
+      id: r.id,
+      title: r.title,
+      image: resolveMediaUrl(r.image),
+      link: r.link || '/shop',
+      cta_text: r.cta_text || null,
+    }))
+    .filter((r) => r.image);
+}
+
+function readCachedFeatured() {
+  const cached = getStoredJson(FEATURED_CACHE_KEY, []);
+  return Array.isArray(cached) ? cached.filter((r) => r?.image) : [];
+}
 
 export default function FeaturedCollection() {
-  const [items, setItems] = useState(FALLBACK);
+  const [items, setItems] = useState(readCachedFeatured);
 
   useEffect(() => {
     let cancelled = false;
@@ -37,20 +31,12 @@ export default function FeaturedCollection() {
     (async () => {
       try {
         const { data } = await api.get('/featured-collections');
-        const rows = data?.data ?? [];
-        if (cancelled || !rows.length) return;
-
-        setItems(
-          rows.map((r) => ({
-            id: r.id,
-            title: r.title,
-            image: resolveMediaUrl(r.image),
-            link: r.link || '/shop',
-            cta_text: r.cta_text || null,
-          }))
-        );
+        const rows = mapFeatured(data?.data ?? []);
+        if (cancelled) return;
+        setItems(rows);
+        if (rows.length) setStoredJson(FEATURED_CACHE_KEY, rows);
       } catch {
-        // Keep fallback tiles
+        // Keep cached tiles if we already have them
       }
     })();
 
@@ -70,7 +56,7 @@ export default function FeaturedCollection() {
         <div className="text-center mb-5">
           <h2 className="section-title">Featured Collection</h2>
           <div className="gold-line" />
-          <p className="section-subtitle">Curated spectacles & sunglasses for every look</p>
+          <p className="section-subtitle">Curated jewellery for every occasion</p>
         </div>
         <div className="featured-collection__grid">
           <Link to={main.link || '/shop'} className="featured-collection__main text-decoration-none">

@@ -1,5 +1,5 @@
 const BADGES = [
-  { icon: 'bi-truck', label: 'Free Shipping', sub: 'On orders above ₹999' },
+  { icon: 'bi-truck', label: 'Free Delivery', sub: 'All over India' },
   { icon: 'bi-arrow-repeat', label: 'Easy Returns', sub: 'Refund or replace if damaged' },
   { icon: 'bi-shield-check', label: 'Secure Payment', sub: '100% protected checkout' },
   { icon: 'bi-headset', label: '24/7 Support', sub: 'Dedicated customer care' },

@@ -20,7 +20,7 @@ export default function Blog() {
 
   return (
     <>
-      <SEO title="Journal" description="Style guides, trends, and stories from YULO." />
+      <SEO title="Journal" description="Stories and inspiration from Vibhaa Jewellery." />
       <div className="page-header">
         <div className="container">
           <Breadcrumb items={[{ label: 'Journal' }]} />

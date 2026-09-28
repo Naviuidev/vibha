@@ -87,7 +87,7 @@ const Products = () => {
 
   return (
     <>
-      <Helmet><title>Products — YULO Admin</title></Helmet>
+      <Helmet><title>Products — Vibhaa Jewellery Admin</title></Helmet>
       <PageHeader
         title="Products"
         subtitle="Manage your product catalog"

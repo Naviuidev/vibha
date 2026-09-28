@@ -79,7 +79,7 @@ const Deliveries = () => {
 
   return (
     <>
-      <Helmet><title>Deliveries — YULO Admin</title></Helmet>
+      <Helmet><title>Deliveries — Vibhaa Jewellery Admin</title></Helmet>
       <PageHeader
         title="Deliveries"
         subtitle="Assign partners, track shipments, manage OTP"

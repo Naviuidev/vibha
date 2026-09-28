@@ -93,7 +93,7 @@ const Analytics = ({ embedded = false } = {}) => {
     <>
       {!embedded ? (
         <>
-          <Helmet><title>Analytics — YULO Admin</title></Helmet>
+          <Helmet><title>Analytics — Vibhaa Jewellery Admin</title></Helmet>
           <PageHeader
             title="Analytics"
             subtitle={`Accurate paid-order performance · ${periodLabel}`}

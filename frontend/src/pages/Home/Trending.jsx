@@ -51,10 +51,15 @@ export default function Trending() {
           className="product-slider"
           modules={[Navigation, Autoplay]}
           navigation
-          spaceBetween={24}
-          slidesPerView={2}
-          autoplay={{ delay: 4000 }}
-          breakpoints={{ 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } }}
+          watchOverflow
+          spaceBetween={12}
+          slidesPerView={1.35}
+          autoplay={{ delay: 4000, disableOnInteraction: false }}
+          breakpoints={{
+            480: { slidesPerView: 2, spaceBetween: 16 },
+            768: { slidesPerView: 3, spaceBetween: 20 },
+            1024: { slidesPerView: 4, spaceBetween: 24 },
+          }}
         >
           {products.map((product, i) => (
             <SwiperSlide key={product.id}>

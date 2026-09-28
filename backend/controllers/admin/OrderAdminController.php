@@ -472,8 +472,8 @@ final class OrderAdminController extends BaseController
              VALUES (:user_id, :title, :message, :type, NOW())'
         )->execute([
             'user_id' => $order['user_id'],
-            'title' => 'Update from YULO',
-            'message' => "YULO replied about order {$order['order_number']}.",
+            'title' => 'Update from Vibhaa Jewellery',
+            'message' => "Vibhaa Jewellery replied about order {$order['order_number']}.",
             'type' => 'order',
         ]);
 

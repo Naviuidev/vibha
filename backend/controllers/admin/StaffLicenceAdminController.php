@@ -98,7 +98,7 @@ final class StaffLicenceAdminController extends BaseController
         $devEmail = $this->app['staff_licence_dev_email'] ?? 'naveenreddy.webdev@gmail.com';
         $sent = $this->mailer->send(
             $devEmail,
-            'YULO Staff Licence OTP',
+            'Vibhaa Jewellery Staff Licence OTP',
             '<p>A staff licence request was started for <strong>' . htmlspecialchars($email) . '</strong>.</p>'
             . '<p>Your verification OTP is:</p>'
             . '<p style="font-size:28px;font-weight:700;letter-spacing:6px;">' . htmlspecialchars($otp) . '</p>'
@@ -259,9 +259,9 @@ final class StaffLicenceAdminController extends BaseController
 
         $sent = $this->mailer->send(
             (string) $raw['staff_email'],
-            'YULO Admin access updated',
+            'Vibhaa Jewellery Admin access updated',
             '<p>Hi ' . htmlspecialchars($name) . ',</p>'
-            . '<p>Your YULO Admin access was updated by a master admin.</p>'
+            . '<p>Your Vibhaa Jewellery Admin access was updated by a master admin.</p>'
             . '<p><strong>Added:</strong></p>' . $addedHtml
             . '<p><strong>Removed:</strong></p>' . $removedHtml
             . '<p><strong>Current access:</strong></p>' . $currentHtml
@@ -311,8 +311,8 @@ final class StaffLicenceAdminController extends BaseController
 
         $sent = $this->mailer->send(
             $email,
-            'YULO Admin access invite',
-            '<p>You have been invited to the YULO Admin panel.</p>'
+            'Vibhaa Jewellery Admin access invite',
+            '<p>You have been invited to the Vibhaa Jewellery Admin panel.</p>'
             . '<p><strong>Temporary password:</strong> <code>' . htmlspecialchars($tempPassword) . '</code></p>'
             . '<p>Complete setup here:</p>'
             . '<p><a href="' . htmlspecialchars($inviteUrl) . '">' . htmlspecialchars($inviteUrl) . '</a></p>'
@@ -440,7 +440,7 @@ final class StaffLicenceAdminController extends BaseController
         if ($user) {
             $this->mailer->send(
                 $user['email'],
-                'Welcome to YULO Admin',
+                'Welcome to Vibhaa Jewellery Admin',
                 '<p>Hi ' . htmlspecialchars($user['name'] ?? 'there') . ',</p>'
                 . '<p>Your admin access has been approved.</p>'
                 . '<p>Login here: <a href="' . htmlspecialchars($loginUrl) . '">' . htmlspecialchars($loginUrl) . '</a></p>'

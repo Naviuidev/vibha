@@ -52,7 +52,7 @@ const CustomerDetail = () => {
 
   return (
     <>
-      <Helmet><title>{customer.name} — YULO Admin</title></Helmet>
+      <Helmet><title>{customer.name} — Vibhaa Jewellery Admin</title></Helmet>
       <PageHeader
         title={customer.name}
         subtitle={customer.email}

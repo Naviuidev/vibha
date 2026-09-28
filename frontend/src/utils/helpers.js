@@ -97,7 +97,11 @@ export function getStoredJson(key, fallback = null) {
 }
 
 export function setStoredJson(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    /* ignore quota / private-mode */
+  }
 }
 
 export function formatDate(dateStr) {
@@ -122,7 +126,7 @@ export function buildQueryString(params) {
 
 /** Resolve relative upload paths (e.g. /uploads/…) to absolute URLs. */
 export function resolveMediaUrl(path) {
-  if (!path) return PLACEHOLDER_IMAGES[0];
+  if (typeof path !== 'string' || !path.trim()) return '';
   if (/^https?:\/\//i.test(path) || path.startsWith('data:')) return path;
   const apiUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8080/api';
   const origin = apiUrl.replace(/\/api\/?$/, '');

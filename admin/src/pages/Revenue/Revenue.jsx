@@ -44,7 +44,7 @@ const Revenue = ({ embedded = false } = {}) => {
     <>
       {!embedded ? (
         <>
-          <Helmet><title>Revenue — YULO Admin</title></Helmet>
+          <Helmet><title>Revenue — Vibhaa Jewellery Admin</title></Helmet>
           <PageHeader title="Revenue" subtitle="Financial performance overview" />
         </>
       ) : (

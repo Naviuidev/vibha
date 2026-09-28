@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap');
 @import './variables.css';
 
 *,
@@ -9,18 +9,72 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 body {
   margin: 0;
   font-family: var(--font);
-  background: var(--secondary);
-  color: var(--primary);
+  background: var(--page-bg);
+  color: var(--teal);
   -webkit-font-smoothing: antialiased;
   line-height: 1.6;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
-/* Prevent sideways scroll only on mobile/tablet */
+.bg-white {
+  background-color: #ffffff !important;
+  color: var(--teal);
+}
+
+.text-muted {
+  color: #6b7280 !important;
+}
+
+.form-control,
+.form-select {
+  background-color: #ffffff;
+  color: var(--teal);
+  border-color: var(--border);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #ffffff;
+  color: var(--teal);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 0.2rem rgba(203, 183, 126, 0.25);
+}
+
+.form-control::placeholder {
+  color: #9ca3af;
+}
+
+.dropdown-menu {
+  background-color: #ffffff;
+  border-color: var(--border);
+}
+
+.dropdown-item {
+  color: var(--teal);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: #f7f7f7;
+  color: var(--teal);
+}
+
+#root,
+.yulo-app-shell,
+.yulo-app-shell > main {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+/* Prevent sideways page scroll on mobile/tablet */
 @media (max-width: 991.98px) {
   html,
   body,
@@ -43,14 +97,14 @@ img {
 }
 
 ::selection {
-  background: #000;
-  color: #fff;
+  background: var(--gold);
+  color: var(--teal);
 }
 
 .gold-line {
   width: 60px;
-  height: 2px;
-  background: var(--accent);
+  height: 1px;
+  background: var(--gold);
   margin: 1rem auto;
 }
 
@@ -63,11 +117,13 @@ img {
 }
 
 .section-title {
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 3.2vw, 2.75rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
+  color: var(--teal);
 }
 
 .section-subtitle {
@@ -87,50 +143,53 @@ img {
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  border: 1px solid var(--primary);
-  background: var(--primary);
-  color: var(--secondary);
+  border: 1px solid var(--gold);
+  background: var(--gold);
+  color: var(--teal);
   cursor: pointer;
   transition: var(--transition);
 }
 
 .btn-yulo:hover {
   background: transparent;
-  color: var(--primary);
+  color: var(--teal);
+  border-color: var(--teal);
 }
 
 .btn-yulo-outline {
   background: transparent;
-  color: var(--primary);
+  color: var(--teal);
+  border-color: var(--teal);
 }
 
 .btn-yulo-outline:hover {
-  background: var(--primary);
-  color: var(--secondary);
+  background: var(--gold);
+  color: var(--teal);
+  border-color: var(--gold);
 }
 
 .btn-yulo-gold {
-  background: #000;
-  border-color: #000;
-  color: #fff;
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--teal);
 }
 
 .btn-yulo-gold:hover {
   background: transparent;
-  color: #000;
-  border-color: #000;
+  color: var(--teal);
+  border-color: var(--teal);
 }
 
 .btn-yulo-white {
-  background: #fff;
-  border-color: #fff;
-  color: #000;
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--teal);
 }
 
 .btn-yulo-white:hover {
   background: transparent;
-  color: #fff;
-  border-color: #fff;
+  color: var(--gold);
+  border-color: var(--gold);
 }
 
 .page-header {
@@ -140,15 +199,32 @@ img {
 }
 
 .page-header h1 {
+  font-family: var(--font-display);
   font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   margin: 0;
+  color: var(--teal);
+}
+
+.about-page__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center 42%;
+}
+
+@media (min-width: 992px) {
+  .about-page__image {
+    aspect-ratio: 4 / 5;
+    object-position: center;
+  }
 }
 
 .skeleton {
-  background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+  background: linear-gradient(90deg, #f0f0f0 25%, #f7f7f7 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -195,11 +271,11 @@ img {
 
 .Toastify__toast--success,
 .Toastify__toast--error {
-  background: #fff !important;
+  background: var(--surface) !important;
   color: #111 !important;
   border: 1px solid #e5e5e5 !important;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.16) !important;
-}
+} 
 
 .Toastify__toast-body,
 .yulo-toast__body {
@@ -290,7 +366,7 @@ img {
 .yulo-compare {
   overflow-x: auto;
   border: 1px solid var(--border);
-  background: #fff;
+  background: var(--page-bg);
 }
 
 .yulo-compare__grid {
@@ -300,7 +376,7 @@ img {
 }
 
 .yulo-compare__label-col {
-  background: #fafafa;
+  background: var(--page-bg);
   border-right: 1px solid var(--border);
   position: sticky;
   left: 0;
@@ -353,7 +429,7 @@ img {
   width: 28px;
   height: 28px;
   border: 1px solid var(--border);
-  background: #fff;
+  background: var(--page-bg);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -424,7 +500,7 @@ img {
   position: relative;
   z-index: 1;
   width: min(560px, 100%);
-  background: #fff;
+  background: var(--page-bg);
   color: #111;
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
   display: flex;

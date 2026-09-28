@@ -1662,7 +1662,7 @@ function PaymentsContent() {
   return (
     <>
       <Helmet>
-        <title>Payments — YULO Admin</title>
+        <title>Payments — Vibhaa Jewellery Admin</title>
       </Helmet>
       <PageHeader
         title="Payments"

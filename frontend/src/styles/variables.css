@@ -1,11 +1,20 @@
 :root {
-  --primary: #000000;
+  --teal: #005155;
+  --teal-deep: #00383b;
+  --teal-mid: #0a666b;
+  --gold: #cbb77e;
+  --gold-light: #e4d5a8;
+  --gold-pale: #f5f0e4;
+  --primary: #005155;
   --secondary: #ffffff;
-  --accent: #000000;
-  --gray: #777777;
-  --bg: #f8f8f8;
-  --border: #e5e5e5;
+  --accent: #cbb77e;
+  --gray: #6b7280;
+  --bg: #ffffff;
+  --page-bg: #ffffff;
+  --surface: #ffffff;
+  --border: #e8e8e8;
   --font: 'Poppins', sans-serif;
+  --font-display: 'Cormorant Garamond', serif;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --navbar-height: 72px;
   --announcement-height: 40px;

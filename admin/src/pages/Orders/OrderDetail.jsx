@@ -203,7 +203,7 @@ const OrderDetail = () => {
   return (
     <>
       <Helmet>
-        <title>Order {order.order_number} — YULO Admin</title>
+        <title>Order {order.order_number} — Vibhaa Jewellery Admin</title>
       </Helmet>
       <PageHeader
         title={`Order ${order.order_number}`}
@@ -452,7 +452,7 @@ const OrderDetail = () => {
                     <div key={msg.id} className="border-bottom pb-2">
                       <div className="d-flex justify-content-between gap-2">
                         <strong className="text-capitalize">
-                          {msg.sender === 'admin' ? 'YULO (you)' : 'Customer'}
+                          {msg.sender === 'admin' ? 'Vibhaa Jewellery (you)' : 'Customer'}
                         </strong>
                         <span className="text-muted">
                           {msg.created_at ? formatDateTime(msg.created_at) : ''}

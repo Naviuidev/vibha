@@ -62,7 +62,7 @@ final class StaffOnboardController extends BaseController
 
         $sent = $this->mailer->send(
             $email,
-            'YULO Admin setup OTP',
+            'Vibhaa Jewellery Admin setup OTP',
             '<p>Your OTP to continue admin setup is:</p>'
             . '<p style="font-size:28px;font-weight:700;letter-spacing:6px;">' . htmlspecialchars($otp) . '</p>'
             . '<p>Expires in 10 minutes.</p>'

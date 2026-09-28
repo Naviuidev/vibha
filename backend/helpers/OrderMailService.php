@@ -37,43 +37,13 @@ final class OrderMailService
         }
 
         $items = (new Order($this->db))->getItems($orderId);
-        $customerEmail = trim((string) ($order['customer_email'] ?? ''));
-        $ownerEmail = $this->resolveOwnerEmail();
 
-        $mailer = new Mailer();
-        $customerOk = false;
-        $ownerOk = false;
-
-        if ($customerEmail !== '' && filter_var($customerEmail, FILTER_VALIDATE_EMAIL)) {
-            $customerOk = $mailer->send(
-                $customerEmail,
-                'Your YULO invoice — Order #' . $order['order_number'],
-                $this->buildInvoiceHtml($order, $items),
-                true
-            );
-        } else {
-            error_log('OrderMailService: missing/invalid customer email for order #' . $orderId);
-        }
-
-        if ($ownerEmail !== '' && filter_var($ownerEmail, FILTER_VALIDATE_EMAIL)) {
-            $ownerOk = $mailer->send(
-                $ownerEmail,
-                'New YULO order #' . $order['order_number'],
-                $this->buildOwnerNotificationHtml($order, $items),
-                true
-            );
-        } else {
-            error_log('OrderMailService: missing/invalid owner email for order #' . $orderId);
-        }
-
-        // Mark notified even if one side failed, to avoid email storms; log failures above.
-        if ($customerOk || $ownerOk) {
-            $this->db->prepare(
-                'UPDATE orders SET email_notified_at = NOW(), updated_at = NOW() WHERE id = :id'
-            )->execute(['id' => $orderId]);
-        }
-
-        return ['customer' => $customerOk, 'owner' => $ownerOk, 'skipped' => false];
+        return $this->dispatchOrderEmails(
+            $order,
+            $items,
+            'Your Vibhaa Jewellery order ' . $order['order_number'],
+            'New Vibhaa Jewellery order ' . $order['order_number']
+        );
     }
 
     /**
@@ -99,38 +69,89 @@ final class OrderMailService
         }
 
         $items = (new Order($this->db))->getItems($orderId);
-        $customerEmail = trim((string) ($order['customer_email'] ?? ''));
-        $ownerEmail = $this->resolveOwnerEmail();
 
+        return $this->dispatchOrderEmails(
+            $order,
+            $items,
+            'Your Vibhaa Jewellery COD order ' . $order['order_number'],
+            'New Vibhaa Jewellery COD order ' . $order['order_number']
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $order
+     * @param list<array<string, mixed>> $items
+     * @return array{customer: bool, owner: bool, skipped: bool}
+     */
+    private function dispatchOrderEmails(array $order, array $items, string $customerSubject, string $ownerSubject): array
+    {
+        $orderId = (int) $order['id'];
+        $customerEmail = $this->resolveCustomerEmail($order);
+        $ownerEmail = $this->resolveOwnerEmail();
         $mailer = new Mailer();
         $customerOk = false;
         $ownerOk = false;
 
-        if ($customerEmail !== '' && filter_var($customerEmail, FILTER_VALIDATE_EMAIL)) {
+        if ($customerEmail !== '') {
             $customerOk = $mailer->send(
                 $customerEmail,
-                'Your YULO COD order #' . $order['order_number'],
+                $customerSubject,
                 $this->buildInvoiceHtml($order, $items),
-                true
+                true,
+                null,
+                $this->buildInvoiceAltBody($order, $items)
             );
+            if (!$customerOk) {
+                error_log('OrderMailService: customer email failed for order #' . $orderId . ': ' . $mailer->getLastError());
+            }
+        } else {
+            error_log('OrderMailService: missing/invalid customer email for order #' . $orderId);
         }
 
-        if ($ownerEmail !== '' && filter_var($ownerEmail, FILTER_VALIDATE_EMAIL)) {
+        if ($ownerEmail !== '') {
             $ownerOk = $mailer->send(
                 $ownerEmail,
-                'New YULO COD order #' . $order['order_number'],
+                $ownerSubject,
                 $this->buildOwnerNotificationHtml($order, $items),
                 true
             );
+            if (!$ownerOk) {
+                error_log('OrderMailService: owner email failed for order #' . $orderId . ': ' . $mailer->getLastError());
+            }
+        } else {
+            error_log('OrderMailService: missing/invalid owner email for order #' . $orderId);
         }
 
-        if ($customerOk || $ownerOk) {
+        // Only stamp when the customer got the invoice. Owner-only success used to
+        // block retries, so the shopper never received order details.
+        if ($customerOk || ($customerEmail === '' && $ownerOk)) {
             $this->db->prepare(
                 'UPDATE orders SET email_notified_at = NOW(), updated_at = NOW() WHERE id = :id'
             )->execute(['id' => $orderId]);
         }
 
         return ['customer' => $customerOk, 'owner' => $ownerOk, 'skipped' => false];
+    }
+
+    /** @param array<string, mixed> $order */
+    private function resolveCustomerEmail(array $order): string
+    {
+        $candidates = [
+            $order['customer_email'] ?? '',
+        ];
+        foreach (['shipping_address', 'billing_address'] as $key) {
+            $addr = $this->decodeAddress($order[$key] ?? null);
+            $candidates[] = $addr['email'] ?? '';
+        }
+
+        foreach ($candidates as $raw) {
+            $email = strtolower(trim((string) $raw));
+            if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return $email;
+            }
+        }
+
+        return '';
     }
 
     private function loadOrder(int $orderId): ?array
@@ -183,6 +204,47 @@ final class OrderMailService
     }
 
     /** @param array<string, mixed> $order @param list<array<string, mixed>> $items */
+    private function orderViewUrl(array $order): string
+    {
+        $app = require dirname(__DIR__) . '/config/app.php';
+        $frontend = rtrim((string) ($app['frontend_url'] ?? ''), '/');
+        return $frontend !== '' ? $frontend . '/profile?section=orders&order=' . (int) $order['id'] : 'https://vibhaajewellery.in/profile';
+    }
+
+    /** @param array<string, mixed> $order @param list<array<string, mixed>> $items */
+    private function buildInvoiceAltBody(array $order, array $items): string
+    {
+        $name = (string) ($order['customer_name'] ?? 'Customer');
+        $orderNumber = (string) $order['order_number'];
+        $isCod = ($order['payment_method'] ?? '') === 'cod';
+        $intro = $isCod
+            ? 'Thank you for your order. Please pay the amount below when it is delivered.'
+            : 'Thank you for your order. Payment is confirmed. Here are your details.';
+        $lines = ["Hi {$name},", '', $intro, '', 'Order: ' . $orderNumber];
+        foreach ($items as $item) {
+            $title = (string) ($item['product_name'] ?? 'Item');
+            $meta = $this->itemOptionsLabel($item);
+            $qty = (int) ($item['quantity'] ?? 0);
+            $line = $this->money((float) ($item['total'] ?? 0));
+            $lines[] = '- ' . $title . ($meta !== '' ? " ({$meta})" : '') . " x {$qty} = {$line}";
+        }
+        $lines[] = '';
+        $lines[] = 'Total: ' . $this->money((float) ($order['total'] ?? 0));
+        $shipping = $this->decodeAddress($order['shipping_address'] ?? null);
+        $shipText = trim(str_replace(['<br>', '<br/>', '<br />'], ', ', $this->formatAddressHtml($shipping)));
+        $shipText = html_entity_decode(strip_tags($shipText), ENT_QUOTES, 'UTF-8');
+        if ($shipText !== '' && $shipText !== '—') {
+            $lines[] = 'Ship to: ' . $shipText;
+        }
+        $lines[] = '';
+        $lines[] = 'View order: ' . $this->orderViewUrl($order);
+        $lines[] = '';
+        $lines[] = 'Vibhaa Jewellery';
+        $lines[] = 'https://vibhaajewellery.in';
+        return implode("\n", $lines);
+    }
+
+    /** @param array<string, mixed> $order @param list<array<string, mixed>> $items */
     private function buildInvoiceHtml(array $order, array $items): string
     {
         $name = htmlspecialchars((string) ($order['customer_name'] ?? 'Customer'), ENT_QUOTES, 'UTF-8');
@@ -190,87 +252,44 @@ final class OrderMailService
         $date = htmlspecialchars(date('d M Y, h:i A', strtotime((string) $order['created_at'])), ENT_QUOTES, 'UTF-8');
         $paymentMethod = htmlspecialchars(strtoupper((string) ($order['payment_method'] ?? 'N/A')), ENT_QUOTES, 'UTF-8');
         $paymentStatus = htmlspecialchars(strtoupper((string) ($order['payment_status'] ?? '')), ENT_QUOTES, 'UTF-8');
-        $status = htmlspecialchars(strtoupper((string) ($order['status'] ?? '')), ENT_QUOTES, 'UTF-8');
+        $isCod = ($order['payment_method'] ?? '') === 'cod';
+        $intro = $isCod
+            ? 'Thank you for your order. Please pay the amount below when your jewellery is delivered.'
+            : 'Thank you for your order. Payment is confirmed. Here are your order details.';
 
-        $shipping = $this->decodeAddress($order['shipping_address'] ?? null);
-        $shipHtml = $this->formatAddressHtml($shipping);
-
-        $rows = '';
+        $itemRows = '';
         foreach ($items as $item) {
             $title = htmlspecialchars((string) ($item['product_name'] ?? 'Item'), ENT_QUOTES, 'UTF-8');
             $meta = $this->itemOptionsLabel($item);
             $metaHtml = $meta !== ''
-                ? '<div style="font-size:12px;color:#888;margin-top:4px;">' . htmlspecialchars($meta, ENT_QUOTES, 'UTF-8') . '</div>'
+                ? ' <span style="color:#555555;">(' . htmlspecialchars($meta, ENT_QUOTES, 'UTF-8') . ')</span>'
                 : '';
             $qty = (int) ($item['quantity'] ?? 0);
             $line = $this->money((float) ($item['total'] ?? 0));
-            $rows .= "<tr>
-                <td style=\"padding:10px 0;border-bottom:1px solid #eee;\">{$title}{$metaHtml}</td>
-                <td style=\"padding:10px 0;border-bottom:1px solid #eee;text-align:center;\">{$qty}</td>
-                <td style=\"padding:10px 0;border-bottom:1px solid #eee;text-align:right;\">{$line}</td>
-              </tr>";
+            $itemRows .= "<p style=\"margin:0 0 8px;font-size:15px;\">{$title}{$metaHtml} × {$qty} — {$line}</p>";
         }
 
-        $subtotal = $this->money((float) ($order['subtotal'] ?? 0));
-        $discount = $this->money((float) ($order['discount'] ?? 0));
-        $shippingCharge = $this->money((float) ($order['shipping_charge'] ?? 0));
-        $tax = $this->money((float) ($order['tax'] ?? 0));
         $total = $this->money((float) ($order['total'] ?? 0));
-
-        $app = require dirname(__DIR__) . '/config/app.php';
-        $frontend = rtrim((string) ($app['frontend_url'] ?? ''), '/');
-        $ordersUrl = $frontend !== '' ? $frontend . '/profile?section=orders&order=' . (int) $order['id'] : '#';
+        $shipping = $this->decodeAddress($order['shipping_address'] ?? null);
+        $shipHtml = $this->formatAddressHtml($shipping);
+        $ordersUrl = htmlspecialchars($this->orderViewUrl($order), ENT_QUOTES, 'UTF-8');
 
         return <<<HTML
 <!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><title>Invoice {$orderNumber}</title></head>
-<body style="margin:0;padding:0;background:#f6f6f6;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
-  <div style="max-width:640px;margin:24px auto;background:#ffffff;border:1px solid #e8e8e8;">
-    <div style="padding:28px 28px 16px;border-bottom:2px solid #111;">
-      <div style="font-size:22px;letter-spacing:0.18em;font-weight:700;">YULO</div>
-      <div style="margin-top:8px;font-size:14px;color:#666;">Order invoice</div>
-    </div>
-    <div style="padding:24px 28px;">
-      <p style="margin:0 0 16px;">Hi {$name},</p>
-      <p style="margin:0 0 20px;color:#444;line-height:1.5;">
-        Thank you for your order. Payment is confirmed and your invoice is below.
-      </p>
-      <table style="width:100%;font-size:13px;margin-bottom:20px;">
-        <tr><td style="padding:4px 0;color:#666;">Order</td><td style="padding:4px 0;text-align:right;font-weight:600;">#{$orderNumber}</td></tr>
-        <tr><td style="padding:4px 0;color:#666;">Date</td><td style="padding:4px 0;text-align:right;">{$date}</td></tr>
-        <tr><td style="padding:4px 0;color:#666;">Status</td><td style="padding:4px 0;text-align:right;">{$status}</td></tr>
-        <tr><td style="padding:4px 0;color:#666;">Payment</td><td style="padding:4px 0;text-align:right;">{$paymentMethod} · {$paymentStatus}</td></tr>
-      </table>
-      <div style="margin-bottom:20px;">
-        <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;margin-bottom:8px;">Ship to</div>
-        <div style="font-size:13px;color:#444;line-height:1.5;">{$shipHtml}</div>
-      </div>
-      <table style="width:100%;font-size:13px;border-collapse:collapse;">
-        <thead>
-          <tr>
-            <th style="text-align:left;padding:8px 0;border-bottom:1px solid #111;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;">Item</th>
-            <th style="text-align:center;padding:8px 0;border-bottom:1px solid #111;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;">Qty</th>
-            <th style="text-align:right;padding:8px 0;border-bottom:1px solid #111;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;">Amount</th>
-          </tr>
-        </thead>
-        <tbody>{$rows}</tbody>
-      </table>
-      <table style="width:100%;font-size:13px;margin-top:12px;">
-        <tr><td style="padding:4px 0;color:#666;">Subtotal</td><td style="padding:4px 0;text-align:right;">{$subtotal}</td></tr>
-        <tr><td style="padding:4px 0;color:#666;">Discount</td><td style="padding:4px 0;text-align:right;">-{$discount}</td></tr>
-        <tr><td style="padding:4px 0;color:#666;">Shipping</td><td style="padding:4px 0;text-align:right;">{$shippingCharge}</td></tr>
-        <tr><td style="padding:4px 0;color:#666;">Tax</td><td style="padding:4px 0;text-align:right;">{$tax}</td></tr>
-        <tr><td style="padding:10px 0 0;font-weight:700;border-top:1px solid #111;">Total</td><td style="padding:10px 0 0;text-align:right;font-weight:700;border-top:1px solid #111;">{$total}</td></tr>
-      </table>
-      <p style="margin:28px 0 0;">
-        <a href="{$ordersUrl}" style="display:inline-block;background:#111;color:#fff;text-decoration:none;padding:12px 18px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;">View order</a>
-      </p>
-    </div>
-    <div style="padding:16px 28px;background:#fafafa;font-size:12px;color:#888;">
-      YULO · This is a system-generated invoice email.
-    </div>
-  </div>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Order {$orderNumber}</title></head>
+<body style="margin:0;padding:24px;font-family:Arial,Helvetica,sans-serif;color:#111111;background:#ffffff;">
+  <p style="margin:0 0 12px;font-size:16px;">Hi {$name},</p>
+  <p style="margin:0 0 16px;font-size:15px;line-height:1.5;">{$intro}</p>
+  <p style="margin:0 0 8px;font-size:15px;"><strong>Order:</strong> {$orderNumber}</p>
+  <p style="margin:0 0 8px;font-size:15px;"><strong>Date:</strong> {$date}</p>
+  <p style="margin:0 0 16px;font-size:15px;"><strong>Payment:</strong> {$paymentMethod} · {$paymentStatus}</p>
+  {$itemRows}
+  <p style="margin:16px 0;font-size:16px;"><strong>Total: {$total}</strong></p>
+  <p style="margin:0 0 8px;font-size:14px;color:#555555;"><strong>Ship to</strong></p>
+  <p style="margin:0 0 16px;font-size:14px;line-height:1.5;color:#333333;">{$shipHtml}</p>
+  <p style="margin:0 0 12px;font-size:15px;"><a href="{$ordersUrl}" style="color:#005155;">View your order</a></p>
+  <p style="margin:24px 0 0;font-size:13px;color:#555555;">Vibhaa Jewellery<br>https://vibhaajewellery.in</p>
 </body>
 </html>
 HTML;
@@ -312,7 +331,7 @@ HTML;
 <body style="margin:0;padding:0;background:#f6f6f6;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
   <div style="max-width:560px;margin:24px auto;background:#ffffff;border:1px solid #e8e8e8;">
     <div style="padding:24px 28px;border-bottom:2px solid #111;">
-      <div style="font-size:18px;font-weight:700;letter-spacing:0.12em;">YULO</div>
+      <div style="font-size:18px;font-weight:700;letter-spacing:0.08em;">Vibhaa Jewellery</div>
       <div style="margin-top:6px;font-size:14px;color:#666;">New order notification</div>
     </div>
     <div style="padding:24px 28px;font-size:14px;line-height:1.5;">
@@ -453,7 +472,7 @@ HTML;
 <body style="margin:0;padding:0;background:#f6f6f6;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
   <div style="max-width:560px;margin:24px auto;background:#ffffff;border:1px solid #e8e8e8;">
     <div style="padding:24px 28px;border-bottom:2px solid #111;">
-      <div style="font-size:18px;font-weight:700;letter-spacing:0.12em;">YULO</div>
+      <div style="font-size:18px;font-weight:700;letter-spacing:0.08em;">Vibhaa Jewellery</div>
       <div style="margin-top:6px;font-size:14px;color:#666;">Order status update</div>
     </div>
     <div style="padding:24px 28px;font-size:14px;line-height:1.5;">
@@ -475,7 +494,7 @@ HTML;
         $mailer = new Mailer();
         $sent = $mailer->send(
             $customerEmail,
-            'YULO order update — #' . $order['order_number'] . ' is ' . $statusLabel,
+            'Vibhaa Jewellery order update — #' . $order['order_number'] . ' is ' . $statusLabel,
             $html,
             true
         );
@@ -525,7 +544,7 @@ HTML;
         $notesBlock = '';
         if (trim($adminNotes) !== '') {
             $notesSafe = htmlspecialchars(trim($adminNotes), ENT_QUOTES, 'UTF-8');
-            $notesBlock = '<p style="margin:16px 0 0;padding:12px;background:#f6f6f6;font-size:13px;"><strong>Note from YULO:</strong><br>'
+            $notesBlock = '<p style="margin:16px 0 0;padding:12px;background:#f6f6f6;font-size:13px;"><strong>Note from Vibhaa Jewellery:</strong><br>'
                 . nl2br($notesSafe) . '</p>';
         }
 
@@ -543,7 +562,7 @@ HTML;
 <body style="margin:0;padding:0;background:#f6f6f6;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
   <div style="max-width:560px;margin:24px auto;background:#ffffff;border:1px solid #e8e8e8;">
     <div style="padding:24px 28px;border-bottom:2px solid #111;">
-      <div style="font-size:18px;font-weight:700;letter-spacing:0.12em;">YULO</div>
+      <div style="font-size:18px;font-weight:700;letter-spacing:0.08em;">Vibhaa Jewellery</div>
       <div style="margin-top:6px;font-size:14px;color:#666;">Return update</div>
     </div>
     <div style="padding:24px 28px;font-size:14px;line-height:1.5;">
@@ -566,7 +585,7 @@ HTML;
         $mailer = new Mailer();
         $sent = $mailer->send(
             $customerEmail,
-            'YULO return update — Order #' . $order['order_number'],
+            'Vibhaa Jewellery return update — Order #' . $order['order_number'],
             $html,
             true
         );
@@ -617,7 +636,7 @@ HTML;
 <body style="margin:0;padding:0;background:#f6f6f6;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
   <div style="max-width:560px;margin:24px auto;background:#ffffff;border:1px solid #e8e8e8;">
     <div style="padding:24px 28px;border-bottom:2px solid #111;">
-      <div style="font-size:18px;font-weight:700;letter-spacing:0.12em;">YULO</div>
+      <div style="font-size:18px;font-weight:700;letter-spacing:0.08em;">Vibhaa Jewellery</div>
       <div style="margin-top:6px;font-size:14px;color:#666;">Your order is on the way</div>
     </div>
     <div style="padding:24px 28px;font-size:14px;line-height:1.5;">
@@ -643,7 +662,7 @@ HTML;
         $mailer = new Mailer();
         $sent = $mailer->send(
             $customerEmail,
-            'YULO tracking — Order #' . $order['order_number'],
+            'Vibhaa Jewellery tracking — Order #' . $order['order_number'],
             $html,
             true
         );
@@ -697,7 +716,7 @@ HTML;
 <body style="margin:0;padding:0;background:#f6f6f6;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;">
   <div style="max-width:560px;margin:24px auto;background:#ffffff;border:1px solid #e8e8e8;">
     <div style="padding:24px 28px;border-bottom:2px solid #111;">
-      <div style="font-size:18px;font-weight:700;letter-spacing:0.12em;">YULO</div>
+      <div style="font-size:18px;font-weight:700;letter-spacing:0.08em;">Vibhaa Jewellery</div>
       <div style="margin-top:6px;font-size:14px;color:#666;">New tracking follow-up</div>
     </div>
     <div style="padding:24px 28px;font-size:14px;line-height:1.5;">
@@ -727,7 +746,7 @@ HTML;
         $mailer = new Mailer();
         $sent = $mailer->send(
             $ownerEmail,
-            'YULO tracking query — Order #' . $row['order_number'],
+            'Vibhaa Jewellery tracking query — Order #' . $row['order_number'],
             $html,
             true
         );

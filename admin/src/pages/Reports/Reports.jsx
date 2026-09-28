@@ -131,7 +131,7 @@ const Reports = ({ embedded = false } = {}) => {
     <>
       {!embedded ? (
         <>
-          <Helmet><title>Reports — YULO Admin</title></Helmet>
+          <Helmet><title>Reports — Vibhaa Jewellery Admin</title></Helmet>
           <PageHeader
             title="Reports"
             subtitle={`Accurate paid-order reports · ${periodLabel}`}

@@ -39,7 +39,7 @@ export default function BestSellers() {
             <div className="gold-line gold-line-left" />
             {description ? <p className="section-subtitle mb-0">{description}</p> : null}
           </div>
-          <Link to="/shop?section=best-sellers" className="small text-uppercase fw-medium text-decoration-none">
+          <Link to="/shop?section=best-sellers" className="small text-uppercase fw-medium text-decoration-none d-none d-md-inline">
             View All →
           </Link>
         </div>

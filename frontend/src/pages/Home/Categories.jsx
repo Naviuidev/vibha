@@ -1,66 +1,67 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay, FreeMode } from 'swiper/modules';
 import { categoryService } from '../../services/productService';
-import { MOCK_CATEGORIES, PLACEHOLDER_IMAGES } from '../../utils/constants';
-import { resolveMediaUrl } from '../../utils/helpers';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/free-mode';
+import { getStoredJson, resolveMediaUrl, setStoredJson } from '../../utils/helpers';
+
+const CATEGORY_CACHE_KEY = 'vibhaa.homeCategories';
 
 function flattenCategories(items = []) {
   return items
     .filter((cat) => !cat.parent_id)
-    .map((cat, i) => ({
+    .map((cat) => ({
       ...cat,
-      image: cat.image || cat.image_path || PLACEHOLDER_IMAGES[i % PLACEHOLDER_IMAGES.length],
-    }));
+      image: resolveMediaUrl(cat.image || cat.image_path || ''),
+    }))
+    .filter((cat) => cat.image);
+}
+
+function readCachedCategories() {
+  const cached = getStoredJson(CATEGORY_CACHE_KEY, []);
+  return Array.isArray(cached) ? cached.filter((c) => c?.image) : [];
 }
 
 export default function Categories() {
-  const [categories, setCategories] = useState(MOCK_CATEGORIES);
+  const [categories, setCategories] = useState(readCachedCategories);
 
   useEffect(() => {
     categoryService.getCategories()
       .then((res) => {
         const data = res.data?.data ?? [];
         const list = flattenCategories(Array.isArray(data) ? data : []);
-        // Only fall back to mocks when the API request failed; empty DB stays empty
         setCategories(list);
+        if (list.length) setStoredJson(CATEGORY_CACHE_KEY, list);
       })
-      .catch(() => setCategories(MOCK_CATEGORIES));
+      .catch(() => {
+        // Keep cached categories if we already have them
+      });
   }, []);
 
+  if (!categories.length) return null;
+
   return (
-    <section className="category-slider-section" data-aos="fade-up">
-      <div className="container">
-        <Swiper
-          className="category-slider"
-          modules={[Navigation, Autoplay, FreeMode]}
-          navigation
-          freeMode
-          centerInsufficientSlides
-          spaceBetween={20}
-          slidesPerView={2}
-          autoplay={{ delay: 3500, disableOnInteraction: false }}
-          breakpoints={{
-            480: { slidesPerView: 2, spaceBetween: 20 },
-            768: { slidesPerView: 4, spaceBetween: 24 },
-            1024: { slidesPerView: 6, spaceBetween: 28 },
-          }}
-        >
+    <section className="category-grid-section">
+      <div className="container-fluid">
+        <h2 className="category-grid__heading">Shop By Category</h2>
+
+        <div className="category-grid">
           {categories.map((cat) => (
-            <SwiperSlide key={cat.id}>
-              <Link to={`/shop?category_id=${cat.id}`} className="category-slide">
-                <div className="category-slide__icon">
-                  <img src={resolveMediaUrl(cat.image ?? cat.image_path)} alt={cat.name} />
-                </div>
-                <span className="category-slide__name">{cat.name}</span>
-              </Link>
-            </SwiperSlide>
+            <Link
+              key={cat.id}
+              to={`/shop?category_id=${cat.id}`}
+              className="category-card"
+            >
+              <div className="category-card__media">
+                <img src={cat.image} alt={cat.name} />
+              </div>
+              <span className="category-card__meta">
+                <span className="category-card__name">{cat.name}</span>
+                <span className="category-card__explore">
+                  Explore <span aria-hidden="true">→</span>
+                </span>
+              </span>
+            </Link>
           ))}
-        </Swiper>
+        </div>
       </div>
     </section>
   );

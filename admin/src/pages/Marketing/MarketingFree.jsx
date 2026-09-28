@@ -12,7 +12,7 @@ export default function MarketingFree() {
   return (
     <>
       <Helmet>
-        <title>Marketing (Paid) — YULO Admin</title>
+        <title>Marketing (Paid) — Vibhaa Jewellery Admin</title>
       </Helmet>
 
       <div className="yulo-mkt-free-upgrade">

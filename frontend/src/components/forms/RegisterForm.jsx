@@ -47,7 +47,7 @@ export default function RegisterForm() {
       );
     } catch {
       // Preference defaults to opted-in on the server if save fails
-      toast.info('Welcome to YULO');
+      toast.info('Welcome to Vibhaa Jewellery');
     } finally {
       setSavingOptIn(false);
       setShowOptIn(false);
@@ -86,7 +86,7 @@ export default function RegisterForm() {
   const onVerifyOtp = async (data) => {
     try {
       await completeOtpLogin({ email, otp: data.otp });
-      toast.success('Account verified — welcome to YULO');
+      toast.success('Account verified — welcome to Vibhaa Jewellery');
       finishWithOptIn();
     } catch (err) {
       toast.error(err.response?.data?.message ?? 'Invalid OTP');

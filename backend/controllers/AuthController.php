@@ -196,7 +196,7 @@ final class AuthController extends BaseController
             $mailer = new Mailer();
             $mailer->send(
                 $user['email'],
-                'Reset Your Password - YULO',
+                'Reset Your Password - Vibhaa Jewellery',
                 "<p>Click <a href=\"{$resetLink}\">here</a> to reset your password. Link expires in 1 hour.</p>"
             );
         }
@@ -368,24 +368,30 @@ final class AuthController extends BaseController
         ]);
 
         $safeName = htmlspecialchars($name !== '' ? $name : 'there', ENT_QUOTES, 'UTF-8');
+        $plainName = $name !== '' ? $name : 'there';
+        $siteUrl = rtrim((string) ($_ENV['FRONTEND_URL'] ?? 'https://vibhaajewellery.in'), '/');
+        $subject = $otp . ' is your Vibhaa Jewellery code';
+        $altBody = "Hi {$plainName},\n\nYour Vibhaa Jewellery signup code is {$otp}.\nIt expires in 10 minutes.\n\nIf you did not create this account, ignore this email.\n\nVibhaa Jewellery\n{$siteUrl}\n";
         $body = <<<HTML
 <!DOCTYPE html>
-<html>
-<body style="font-family: Arial, sans-serif; color: #111; line-height: 1.5;">
-  <div style="max-width: 480px; margin: 0 auto; padding: 24px;">
-    <h2 style="letter-spacing: 0.12em; text-transform: uppercase;">YULO</h2>
-    <p>Hi {$safeName},</p>
-    <p>Use this one-time password to verify your YULO account:</p>
-    <p style="font-size: 32px; font-weight: 700; letter-spacing: 0.25em; margin: 24px 0;">{$otp}</p>
-    <p>This code expires in <strong>10 minutes</strong>.</p>
-    <p style="color: #666; font-size: 13px;">If you did not create a YULO account, you can ignore this email.</p>
-  </div>
+<html lang="en">
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:24px;font-family:Arial,Helvetica,sans-serif;color:#111111;background:#ffffff;">
+  <p style="margin:0 0 12px;font-size:16px;">Hi {$safeName},</p>
+  <p style="margin:0 0 12px;font-size:15px;line-height:1.5;">Your Vibhaa Jewellery signup code is:</p>
+  <p style="margin:16px 0;font-size:28px;font-weight:700;">{$otp}</p>
+  <p style="margin:0 0 12px;font-size:15px;">This code expires in 10 minutes.</p>
+  <p style="margin:24px 0 0;font-size:13px;color:#555555;">If you did not create this account, you can ignore this email.<br>{$siteUrl}</p>
 </body>
 </html>
 HTML;
 
         $mailer = new Mailer();
-        return $mailer->send($email, 'Your YULO verification code', $body, true);
+        $sent = $mailer->send($email, $subject, $body, true, null, $altBody);
+        if (!$sent) {
+            error_log('OTP email failed for ' . $email . ': ' . $mailer->getLastError());
+        }
+        return $sent;
     }
 
     private function issueTokens(int $userId, string $role): array

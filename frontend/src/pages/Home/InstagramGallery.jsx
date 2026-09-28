@@ -28,7 +28,7 @@ export default function InstagramGallery() {
 
   if (!ready || !feed?.enabled || !feed.items?.length) return null;
 
-  const handle = String(feed.handle || 'yulofashion').replace(/^@/, '');
+  const handle = String(feed.handle || 'vibhaajewellery').replace(/^@/, '');
   const profileUrl = feed.profile_url || `https://www.instagram.com/${handle}/`;
 
   return (

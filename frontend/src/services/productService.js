@@ -86,8 +86,7 @@ export const categoryService = {
     try {
       return await api.get('/categories');
     } catch {
-      const { MOCK_CATEGORIES } = await import('../utils/constants');
-      return { data: { success: true, data: MOCK_CATEGORIES } };
+      return { data: { success: true, data: [] } };
     }
   },
   getCategory: (slug) => api.get(`/categories/${slug}`),

@@ -5,7 +5,7 @@ export default function SEO({ title, description, keywords, image, url }) {
   const pageTitle = title ? `${title} | ${BRAND_NAME}` : SITE_TITLE;
   const desc =
     description ??
-    'Discover fashion, accessories and more at YULO. Wear YULO, Look Awesome.';
+    'Discover handcrafted jewellery at Vibhaa Jewellery.';
 
   return (
     <Helmet>

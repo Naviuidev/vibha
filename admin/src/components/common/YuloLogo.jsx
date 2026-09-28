@@ -1,6 +1,6 @@
 /**
- * YULO wordmark image.
- * variant: 'light' (white, for dark backgrounds) | 'dark' (black, for light backgrounds)
+ * Vibhaa Jewellery logo.
+ * variant: 'light' | 'dark' | 'accent' — same mark (square, gold on teal)
  */
 const SRC = {
   light: '/logo-light.png',
@@ -11,9 +11,9 @@ const SRC = {
 export default function YuloLogo({
   variant = 'dark',
   className = '',
-  title = 'YULO',
+  title = 'Vibhaa Jewellery',
 }) {
-  const src = SRC[variant] || SRC.dark;
+  const src = `${SRC[variant] || SRC.dark}?v=vibhaa`;
 
   return (
     <img

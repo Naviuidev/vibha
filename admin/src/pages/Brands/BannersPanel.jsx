@@ -170,7 +170,7 @@ function HeroBannersTab() {
     <>
       <div className="alert alert-light border mb-4">
         Active Home banners: <strong>{homeActiveCount}</strong> / {MAX_HOME_ACTIVE}. These images slide behind the
-        hero logo and “WEAR YULO. LOOK AWESOME.” on the storefront.
+        hero logo and “SPARKLE IN EVERY MOMENT.” on the storefront.
       </div>
 
       <div className="row g-4">

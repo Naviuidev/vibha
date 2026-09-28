@@ -5,7 +5,7 @@ export default function Shiprocket() {
   return (
     <>
       <Helmet>
-        <title>Shiprocket — YULO Admin</title>
+        <title>Shiprocket — Vibhaa Jewellery Admin</title>
       </Helmet>
       <PageHeader
         title="Shiprocket"

@@ -1,7 +1,7 @@
 export default function Loader({ fullScreen = false, size = 'md' }) {
   const spinnerSize = size === 'sm' ? 'spinner-border-sm' : '';
   const content = (
-    <div className={`spinner-border text-dark ${spinnerSize}`} role="status">
+    <div className={`spinner-border ${spinnerSize}`} role="status" style={{ color: 'var(--teal, #005155)' }}>
       <span className="visually-hidden">Loading...</span>
     </div>
   );

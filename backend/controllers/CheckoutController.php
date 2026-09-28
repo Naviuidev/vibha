@@ -1689,6 +1689,14 @@ final class CheckoutController extends BaseController
 
             $this->db->commit();
 
+            if ($paymentMethod === 'cod') {
+                try {
+                    (new OrderMailService($this->db))->notifyCodOrder($orderId);
+                } catch (Throwable $e) {
+                    error_log('Order email notify failed (guest cod): ' . $e->getMessage());
+                }
+            }
+
             Response::jsonSuccess([
                 'order_id' => $orderId,
                 'order_number' => $orderNumber,

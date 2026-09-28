@@ -151,7 +151,7 @@ const Categories = () => {
 
   return (
     <>
-      <Helmet><title>Categories — YULO Admin</title></Helmet>
+      <Helmet><title>Categories — Vibhaa Jewellery Admin</title></Helmet>
       <PageHeader title="Categories" subtitle="Organize products into categories — icons appear on the storefront slider" />
 
       <div className="row g-4">

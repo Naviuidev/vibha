@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import LegalPage, { LegalSection } from '../../components/legal/LegalPage';
 import { BRAND_NAME } from '../../utils/constants';
 
@@ -6,68 +5,43 @@ export default function ShippingPolicy() {
   return (
     <LegalPage
       title="Shipping Policy"
-      description={`${BRAND_NAME} shipping policy — delivery timelines, charges, and tracking across India.`}
+      description={`${BRAND_NAME} shipping policy — free shipping across India, 10–14 working days delivery, and online payment only.`}
+      updated="20 September 2026"
     >
-      <LegalSection title="1. Service area">
+      <LegalSection title="Free Shipping">
         <p>
-          We currently ship across India. International shipping is not available yet. Some remote
-          pincodes may have longer delivery times or limited COD options depending on our courier
-          partners.
+          We offer FREE shipping across India on all orders placed through our website.
         </p>
       </LegalSection>
 
-      <LegalSection title="2. Shipping charges">
+      <LegalSection title="Delivery Time">
         <p>
-          Standard cart shipping is <strong>free on orders of ₹999 and above</strong>. Below ₹999, a
-          shipping fee of <strong>₹99</strong> usually applies. Individual products may use a custom
-          shipping charge set by us — that amount is shown at checkout when applicable.
+          Orders are usually delivered within 10–14 working days from the date of order
+          confirmation.
+        </p>
+        <p>
+          Delivery time may vary depending on the customer&apos;s location, courier service,
+          weather, or other unforeseen circumstances.
         </p>
       </LegalSection>
 
-      <LegalSection title="3. Processing & delivery">
-        <ul className="mb-0 ps-3">
-          <li className="mb-2">
-            Orders are typically processed within 1–2 business days after confirmation (and payment,
-            for prepaid orders).
-          </li>
-          <li className="mb-2">
-            Estimated delivery is usually 3–7 business days after dispatch, depending on your location
-            and courier capacity.
-          </li>
-          <li>
-            Delays may occur during sales, festivals, weather events, or courier disruptions.
-          </li>
-        </ul>
-      </LegalSection>
-
-      <LegalSection title="4. Order tracking">
+      <LegalSection title="Tracking">
         <p>
-          Once your order is shipped and a tracking number is shared, you can track it from{' '}
-          <Link to="/track-order">Track Order</Link> or your{' '}
-          <Link to="/profile?section=orders">My Orders</Link> page.
+          Once your order is shipped, you will receive the available tracking details to track your
+          package.
         </p>
       </LegalSection>
 
-      <LegalSection title="5. Cash on Delivery (COD)">
+      <LegalSection title="Delivery Address">
         <p>
-          COD is available only when every product in your cart allows COD. Please keep the exact
-          order amount ready at delivery. Failed delivery attempts due to wrong address or
-          unavailable recipient may incur reattempt or return-to-origin handling.
+          Please ensure that the delivery address and contact details provided at checkout are
+          correct.
         </p>
       </LegalSection>
 
-      <LegalSection title="6. Address accuracy">
+      <LegalSection title="Payment">
         <p>
-          You are responsible for providing a complete and correct delivery address and phone number.
-          Orders returned due to incorrect details may be subject to additional shipping charges on
-          reshipment.
-        </p>
-      </LegalSection>
-
-      <LegalSection title="7. Need help?">
-        <p>
-          For shipping questions, use the <Link to="/contact">Contact</Link> page or raise a tracking
-          query from your order details when tracking is not yet available.
+          Currently, we offer online payment only. Cash on Delivery (COD) is not available.
         </p>
       </LegalSection>
     </LegalPage>

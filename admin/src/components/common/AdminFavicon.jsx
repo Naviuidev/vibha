@@ -59,7 +59,7 @@ export default function AdminFavicon() {
       const link = document.createElement('link');
       link.rel = 'icon';
       link.type = 'image/png';
-      link.href = '/logo.png';
+      link.href = `${import.meta.env.BASE_URL}logo.png`;
       document.head.appendChild(link);
     };
 

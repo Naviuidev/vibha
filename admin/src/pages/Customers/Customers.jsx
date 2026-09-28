@@ -73,7 +73,7 @@ const Customers = () => {
   return (
     <>
       <Helmet>
-        <title>{view === 'signup' ? 'Signup Users' : 'Customers'} — YULO Admin</title>
+        <title>{view === 'signup' ? 'Signup Users' : 'Customers'} — Vibhaa Jewellery Admin</title>
       </Helmet>
       <PageHeader
         title="Customers"

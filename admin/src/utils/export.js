@@ -50,7 +50,7 @@ export const printAsPDF = (title, contentHtml) => {
       </style>
     </head>
     <body>
-      <h1>YULO — ${title}</h1>
+      <h1>Vibhaa Jewellery — ${title}</h1>
       <p>Generated: ${new Date().toLocaleString()}</p>
       ${contentHtml}
     </body>

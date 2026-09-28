@@ -389,7 +389,7 @@ INSERT INTO cms_pages (title, slug, content, meta_title, meta_description, statu
 INSERT INTO settings (`key`, value, `group`, is_public, created_at, updated_at) VALUES
 ('site_name', 'YULO', 'general', 1, NOW(), NOW()),
 ('site_tagline', 'Premium Fashion, Redefined', 'general', 1, NOW(), NOW()),
-('support_email', 'support@yulo.com', 'general', 1, NOW(), NOW()),
+('support_email', 'vibhaahouse@gmail.com', 'general', 1, NOW(), NOW()),
 ('support_phone', '+91 80 4567 8900', 'general', 1, NOW(), NOW()),
 ('currency', 'INR', 'general', 1, NOW(), NOW()),
 ('currency_symbol', '₹', 'general', 1, NOW(), NOW()),

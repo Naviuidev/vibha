@@ -1,8 +1,9 @@
-export const BRAND_NAME = 'YULO';
-export const BRAND_TAGLINE = 'WEAR YULO. LOOK AWESOME.';
-export const SITE_TITLE = 'YULO | Fashion, Accessories & More';
+export const BRAND_NAME = 'Vibhaa Jewellery';
+export const BRAND_TAGLINE = 'Elegant jewellery for every occasion, made to match your style.';
+export const SITE_TITLE = 'Vibhaa Jewellery – All Your Jewellery, One Place';
 export const BRAND_DESCRIPTION =
-  'YULO — Fashion, accessories and more. Wear YULO, Look Awesome.';
+  'Vibhaa Jewellery — handcrafted jewellery for every occasion.';
+export const SUPPORT_EMAIL = 'vibhaahouse@gmail.com';
 
 export const PLACEHOLDER_IMAGES = [
   'https://images.unsplash.com/photo-1508296695146-257a814070b4?w=800&q=80', // classic black sunglasses
@@ -61,7 +62,7 @@ export const MOCK_PRODUCTS = [
     review_count: 124,
     is_featured: true,
     is_new: true,
-    brand_name: 'YULO Studio',
+    brand_name: 'Vibhaa Jewellery',
     category_name: 'Outerwear',
   },
   {
@@ -75,7 +76,7 @@ export const MOCK_PRODUCTS = [
     average_rating: 4.6,
     review_count: 89,
     is_featured: true,
-    brand_name: 'YULO Studio',
+    brand_name: 'Vibhaa Jewellery',
     category_name: 'Blazers',
   },
   {
@@ -89,7 +90,7 @@ export const MOCK_PRODUCTS = [
     average_rating: 4.9,
     review_count: 203,
     is_new: true,
-    brand_name: 'YULO Atelier',
+    brand_name: 'Vibhaa Atelier',
     category_name: 'Dresses',
   },
   {
@@ -102,7 +103,7 @@ export const MOCK_PRODUCTS = [
     images: mockGallery(3),
     average_rating: 4.5,
     review_count: 67,
-    brand_name: 'YULO Studio',
+    brand_name: 'Vibhaa Jewellery',
     category_name: 'Bottoms',
   },
   {
@@ -116,7 +117,7 @@ export const MOCK_PRODUCTS = [
     average_rating: 4.7,
     review_count: 156,
     is_featured: true,
-    brand_name: 'YULO Atelier',
+    brand_name: 'Vibhaa Atelier',
     category_name: 'Knitwear',
   },
   {
@@ -129,7 +130,7 @@ export const MOCK_PRODUCTS = [
     images: mockGallery(5),
     average_rating: 4.4,
     review_count: 42,
-    brand_name: 'YULO Accessories',
+    brand_name: 'Vibhaa Accessories',
     category_name: 'Bags',
   },
   {
@@ -143,7 +144,7 @@ export const MOCK_PRODUCTS = [
     average_rating: 4.3,
     review_count: 312,
     is_new: true,
-    brand_name: 'YULO Essentials',
+    brand_name: 'Vibhaa Essentials',
     category_name: 'Tops',
   },
   {
@@ -156,7 +157,7 @@ export const MOCK_PRODUCTS = [
     images: mockGallery(7),
     average_rating: 4.6,
     review_count: 98,
-    brand_name: 'YULO Studio',
+    brand_name: 'Vibhaa Jewellery',
     category_name: 'Bottoms',
   },
 ];
@@ -171,10 +172,10 @@ export const MOCK_CATEGORIES = [
 ];
 
 export const MOCK_BRANDS = [
-  { id: 1, name: 'YULO Studio', slug: 'yulo-studio' },
-  { id: 2, name: 'YULO Atelier', slug: 'yulo-atelier' },
-  { id: 3, name: 'YULO Essentials', slug: 'yulo-essentials' },
-  { id: 4, name: 'YULO Accessories', slug: 'yulo-accessories' },
+  { id: 1, name: 'Vibhaa Jewellery', slug: 'yulo-studio' },
+  { id: 2, name: 'Vibhaa Atelier', slug: 'yulo-atelier' },
+  { id: 3, name: 'Vibhaa Essentials', slug: 'yulo-essentials' },
+  { id: 4, name: 'Vibhaa Accessories', slug: 'yulo-accessories' },
 ];
 
 export const MOCK_REVIEWS = [
@@ -222,7 +223,7 @@ export const MOCK_BLOGS = [
     id: 3,
     title: 'Fabric Care Guide',
     slug: 'fabric-care-guide',
-    excerpt: 'Preserve the luxury of your YULO pieces with expert care tips.',
+    excerpt: 'Preserve the luxury of your Vibhaa Jewellery pieces with expert care tips.',
     image: PLACEHOLDER_IMAGES[4],
     created_at: '2026-07-01',
   },

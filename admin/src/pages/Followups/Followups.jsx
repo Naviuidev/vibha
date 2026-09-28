@@ -568,7 +568,7 @@ export default function Followups() {
   return (
     <>
       <Helmet>
-        <title>Followups — YULO Admin</title>
+        <title>Followups — Vibhaa Jewellery Admin</title>
       </Helmet>
       <PageHeader
         title="Followups"

@@ -77,21 +77,21 @@ export default function Navbar() {
 
           <Link to="/wishlist" className="nav-icon-btn" aria-label="Wishlist">
             <i className="bi bi-heart" />
-            {wishlistCount > 0 && <span className="nav-badge">{wishlistCount}</span>}
+            {wishlistCount > 0 && <span className="nav-badge">{wishlistCount > 99 ? '99+' : wishlistCount}</span>}
           </Link>
 
           <Link to="/compare" className="nav-icon-btn" aria-label="Compare">
             <i className="bi bi-arrow-left-right" />
-            {compareCount > 0 && <span className="nav-badge">{compareCount}</span>}
+            {compareCount > 0 && <span className="nav-badge">{compareCount > 99 ? '99+' : compareCount}</span>}
           </Link>
 
           <Link to="/cart" className="nav-icon-btn" aria-label="Cart">
             <i className="bi bi-bag" />
-            {cartCount > 0 && <span className="nav-badge">{cartCount}</span>}
+            {cartCount > 0 && <span className="nav-badge">{cartCount > 99 ? '99+' : cartCount}</span>}
           </Link>
         </div>
 
-        {/* Mobile / tablet: search then hamburger (right) */}
+        {/* Mobile / tablet: search, wishlist, hamburger */}
         <div className="d-lg-none d-flex align-items-center gap-1 yulo-navbar__mobile-actions">
           <button
             type="button"
@@ -101,6 +101,10 @@ export default function Navbar() {
           >
             <i className="bi bi-search" />
           </button>
+          <Link to="/wishlist" className="nav-icon-btn" aria-label="Wishlist">
+            <i className="bi bi-heart" />
+            {wishlistCount > 0 && <span className="nav-badge">{wishlistCount > 99 ? '99+' : wishlistCount}</span>}
+          </Link>
           <button
             type="button"
             className="nav-icon-btn yulo-navbar__menu-btn"

@@ -64,7 +64,7 @@ export default function TrackOrder() {
             <label className="form-label">Order Number</label>
             <input
               className="form-control"
-              placeholder="e.g. YULO-20260813-XXXX"
+              placeholder="e.g. VIBHAA-20260813-XXXX"
               {...register('order_number', { required: true })}
             />
           </div>

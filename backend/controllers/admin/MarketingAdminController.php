@@ -340,7 +340,7 @@ final class MarketingAdminController extends BaseController
 <html>
 <body style="font-family:Arial,sans-serif;color:#111;line-height:1.5;">
   <div style="max-width:560px;margin:0 auto;padding:24px;">
-    <h2 style="letter-spacing:0.12em;text-transform:uppercase;">YULO</h2>
+    <h2 style="letter-spacing:0.08em;">Vibhaa Jewellery</h2>
     <p><strong>Marketing feature request</strong></p>
     <p>Someone requested access to unlock Paid Marketing campaigns (one-to-one + bulk).</p>
     <table style="width:100%;border-collapse:collapse;font-size:14px;">
@@ -364,7 +364,7 @@ HTML;
 
         $sent = $this->mailer->send(
             $to,
-            'YULO Marketing feature request — ' . $name,
+            'Vibhaa Jewellery Marketing feature request — ' . $name,
             $html,
             true,
             $email
@@ -457,7 +457,7 @@ HTML;
             . ($description !== '' ? '<p style="line-height:1.55;margin:0 0 12px;">' . $description . '</p>' : '')
             . $priceBlock
             . '<p style="margin:24px 0;"><a href="' . $cta . '" style="display:inline-block;background:#111;color:#fff;text-decoration:none;padding:12px 22px;font-weight:600;">Shop now</a></p>'
-            . '<p style="font-size:12px;color:#888;">You received this promotion from YULO.</p>'
+            . '<p style="font-size:12px;color:#888;">You received this promotion from Vibhaa Jewellery.</p>'
             . '</div>';
     }
 

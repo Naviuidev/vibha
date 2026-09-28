@@ -36,11 +36,28 @@ final class ContactController extends BaseController
 
         $mailer = new Mailer();
         $appConfig = require dirname(__DIR__) . '/config/app.php';
-        $mailer->send(
-            $appConfig['mail']['from_address'],
-            'New Contact: ' . $input['subject'],
-            "<p>From: {$input['name']} ({$input['email']})</p><p>{$input['message']}</p>"
-        );
+        $inbox = trim((string) ($_ENV['OWNER_EMAIL'] ?? ''));
+        if ($inbox === '' || !filter_var($inbox, FILTER_VALIDATE_EMAIL)) {
+            $inbox = (string) ($appConfig['mail']['from_address'] ?? '');
+        }
+
+        $safeName = htmlspecialchars((string) $input['name'], ENT_QUOTES, 'UTF-8');
+        $safeEmail = htmlspecialchars((string) $input['email'], ENT_QUOTES, 'UTF-8');
+        $safeSubject = htmlspecialchars((string) $input['subject'], ENT_QUOTES, 'UTF-8');
+        $safeMessage = nl2br(htmlspecialchars((string) $input['message'], ENT_QUOTES, 'UTF-8'));
+
+        if ($inbox !== '' && filter_var($inbox, FILTER_VALIDATE_EMAIL)) {
+            $sent = $mailer->send(
+                $inbox,
+                'New Contact: ' . $input['subject'],
+                "<p>From: {$safeName} ({$safeEmail})</p><p>Subject: {$safeSubject}</p><p>{$safeMessage}</p>",
+                true,
+                (string) $input['email']
+            );
+            if (!$sent) {
+                error_log('Contact notification email failed: ' . $mailer->getLastError());
+            }
+        }
 
         Response::jsonSuccess(null, 'Message sent successfully.', 201);
     }

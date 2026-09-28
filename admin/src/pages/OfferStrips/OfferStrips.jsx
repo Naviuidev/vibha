@@ -676,7 +676,7 @@ const OfferStrips = () => {
   return (
     <>
       <Helmet>
-        <title>Offers — YULO Admin</title>
+        <title>Offers — Vibhaa Jewellery Admin</title>
       </Helmet>
       <PageHeader
         title="Offers"

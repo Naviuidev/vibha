@@ -19,7 +19,7 @@ const emptyWhatsApp = {
   enabled: false,
   number: '',
   position: 'bottom-left',
-  prefill: 'Hi YULO, I have a question about your eyewear.',
+  prefill: 'Hi Vibhaa Jewellery, I have a question about your jewellery.',
 };
 
 const FALLBACK_PLATFORMS = [
@@ -138,7 +138,7 @@ function WhatsAppPanel() {
               id="whatsapp-prefill"
               className="form-control"
               rows={2}
-              placeholder="Hi YULO…"
+              placeholder="Hi Vibhaa Jewellery…"
               {...register('prefill')}
             />
             <div className="form-text">Pre-filled text when a visitor opens the chat.</div>
@@ -591,7 +591,7 @@ function InstaFeedPanel() {
       <div className="yulo-insta-admin__creds mb-4">
         <h6 className="mb-2">Instagram account API</h6>
         <p className="small text-muted mb-3">
-          Used to fetch posts for the homepage @{watch('handle') || 'yulowear.in'} section.
+          Used to fetch posts for the homepage @{watch('handle') || 'vibhaajewellery'} section.
           {tokenSet ? ' Access token is saved.' : ''}
         </p>
         <div className="row g-3">
@@ -639,7 +639,7 @@ function InstaFeedPanel() {
         <div>
           <h6 className="mb-0">{feedSource === 'api' ? 'Synced / feed posts' : 'Manual feed posts'}</h6>
           <div className="small text-muted">
-            {items.length} post{items.length === 1 ? '' : 's'} will show under @{watch('handle') || 'yulowear.in'}
+            {items.length} post{items.length === 1 ? '' : 's'} will show under @{watch('handle') || 'vibhaajewellery'}
           </div>
         </div>
         {feedSource === 'manual' ? (
@@ -747,7 +747,7 @@ export default function SocialConnects() {
   return (
     <>
       <Helmet>
-        <title>Configure Social Connects — YULO Admin</title>
+        <title>Configure Social Connects — Vibhaa Jewellery Admin</title>
       </Helmet>
       <PageHeader
         title="Configure Social Connects"

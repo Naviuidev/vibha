@@ -14,7 +14,7 @@ export default function MarketingOptInPopup({ open, onConfirm, saving = false })
     <div className="marketing-optin-popup" role="dialog" aria-modal="true" aria-labelledby="marketing-optin-title">
       <div className="marketing-optin-popup__backdrop" />
       <div className="marketing-optin-popup__card">
-        <p className="marketing-optin-popup__eyebrow">Welcome to YULO</p>
+        <p className="marketing-optin-popup__eyebrow">Welcome to Vibhaa Jewellery</p>
         <h2 id="marketing-optin-title" className="marketing-optin-popup__title">
           Stay in the loop
         </h2>

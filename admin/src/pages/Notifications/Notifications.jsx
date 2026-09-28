@@ -106,7 +106,7 @@ const Notifications = () => {
 
   return (
     <>
-      <Helmet><title>Notifications — YULO Admin</title></Helmet>
+      <Helmet><title>Notifications — Vibhaa Jewellery Admin</title></Helmet>
       <PageHeader
         title="Notifications"
         subtitle="Live store activity — click any item to open it"

@@ -472,7 +472,7 @@ export default function Profile() {
               <section>
                 <h2 className="h5 text-uppercase small fw-semibold mb-3">Permissions</h2>
                 <p className="text-muted mb-4" style={{ maxWidth: 560 }}>
-                  Control whether YULO can email you promotions, offers, and campaign updates.
+                  Control whether Vibhaa Jewellery can email you promotions, offers, and campaign updates.
                   Your account, orders, and order notifications are never affected by this setting.
                 </p>
 
@@ -480,7 +480,7 @@ export default function Profile() {
                   <div className="profile-permission-card__copy">
                     <h3 className="h6 mb-2">Promotional emails</h3>
                     <p className="small text-muted mb-2">
-                      <strong>Opt in</strong> means you allow YULO to send product launches, discounts,
+                      <strong>Opt in</strong> means you allow Vibhaa Jewellery to send product launches, discounts,
                       and campaign emails to your registered address.
                     </p>
                     <p className="small text-muted mb-0">

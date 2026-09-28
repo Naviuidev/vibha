@@ -148,6 +148,7 @@ final class Product
         }
 
         if (!empty($filters['section'])) {
+            SchemaGuard::ensureHomeSections($this->db);
             $where[] = 'EXISTS (
                 SELECT 1 FROM product_home_sections phs
                 INNER JOIN home_sections hs ON hs.id = phs.section_id

@@ -27,28 +27,20 @@ final class WhatsAppController extends BaseController
             $position = 'bottom-left';
         }
 
-        if (!$enabled || $digits === '') {
-            Response::jsonSuccess([
-                'enabled' => false,
-                'number' => '',
-                'position' => $position,
-                'prefill' => '',
-            ]);
-            return;
-        }
-
         $prefill = (string) ($rows['whatsapp_prefill'] ?? '');
-        $display = str_starts_with($digits, '91') && strlen($digits) === 12
+        $display = $digits !== '' && str_starts_with($digits, '91') && strlen($digits) === 12
             ? '+91 ' . substr($digits, 2, 5) . ' ' . substr($digits, 7)
-            : '+' . $digits;
+            : ($digits !== '' ? '+' . $digits : '');
 
         Response::jsonSuccess([
-            'enabled' => true,
+            'enabled' => $enabled && $digits !== '',
             'number' => $digits,
             'display_number' => $display,
             'position' => $position,
             'prefill' => $prefill,
-            'url' => 'https://wa.me/' . $digits . ($prefill !== '' ? '?text=' . rawurlencode($prefill) : ''),
+            'url' => $digits !== ''
+                ? 'https://wa.me/' . $digits . ($prefill !== '' ? '?text=' . rawurlencode($prefill) : '')
+                : '',
         ]);
     }
 }

@@ -1,13 +1,35 @@
--- YULO eCommerce Database Schema
--- Shared hosting (MilesWeb / cPanel):
---   1. Create DB in cPanel first (e.g. yulowear1_123)
---   2. Select that DB in phpMyAdmin
---   3. Import this file (do NOT create yulo_db here — hosts block CREATE DATABASE)
--- Local MySQL:
---   CREATE DATABASE yulo_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
---   then: mysql -u root -p yulo_db < schema.sql
+-- =============================================================================
+-- Vibhaa Jewellery — production import (fresh MilesWeb database)
+-- Database: yulowear1_vibhaajewellery
+-- =============================================================================
+-- phpMyAdmin:
+--   1. Open phpMyAdmin
+--   2. Click database  yulowear1_vibhaajewellery  on the left
+--   3. Import → Choose this file → Go
+--
+-- Do NOT import into yulowear1_123 (that is the YULO store).
+-- Do NOT import seed.sql (that is YULO demo products).
+--
+-- Local CLI:
+--   CREATE DATABASE your_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+--   mysql -u root -p your_db < backend/database/full_final.sql
+--
+-- Includes:
+--   • Complete base schema (users, products, orders, payments, etc.)
+--   • Home sections, offers, marketing, staff licences, visitors, followups
+--   • COD / cancel / return product flags + orders.delivered_at
+--   • order_returns + order_help_messages
+--   • reviews.display_name / avatar_path (static reviews)
+--   • admin_notification_reads
+--   • Default admin: 992201351702 / Hosur@1998
+--   • Base settings + homepage section seeds
+--
+-- Does NOT include demo catalog (seed.sql). Import seed.sql only if you want demo data.
+-- For upgrading an EXISTING live DB, keep using prodready.sql instead of this file.
+-- =============================================================================
 
--- Users
+SET NAMES utf8mb4;
+
 CREATE TABLE IF NOT EXISTS users (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -322,6 +344,8 @@ CREATE TABLE IF NOT EXISTS reviews (
     rating TINYINT NOT NULL,
     title VARCHAR(255) NULL,
     comment TEXT NOT NULL,
+    display_name VARCHAR(255) NULL,
+    avatar_path VARCHAR(500) NULL,
     status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL,
@@ -619,6 +643,44 @@ CREATE TABLE IF NOT EXISTS inventory_logs (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+
+-- Customer return requests
+CREATE TABLE IF NOT EXISTS order_returns (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    order_id INT UNSIGNED NOT NULL,
+    user_id INT UNSIGNED NOT NULL,
+    status ENUM('requested', 'in_process', 'completed', 'rejected') NOT NULL DEFAULT 'in_process',
+    reason TEXT NULL,
+    admin_notes TEXT NULL,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL,
+    INDEX idx_order_returns_order (order_id),
+    INDEX idx_order_returns_user (user_id),
+    INDEX idx_order_returns_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Customer ↔ admin help messages on an order
+CREATE TABLE IF NOT EXISTS order_help_messages (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    order_id INT UNSIGNED NOT NULL,
+    user_id INT UNSIGNED NOT NULL,
+    sender ENUM('customer', 'admin') NOT NULL,
+    message TEXT NOT NULL,
+    created_at DATETIME NOT NULL,
+    INDEX idx_order_help_order (order_id),
+    INDEX idx_order_help_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Per-admin notification read state
+CREATE TABLE IF NOT EXISTS admin_notification_reads (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED NOT NULL,
+    item_key VARCHAR(120) NOT NULL,
+    read_at DATETIME NOT NULL,
+    UNIQUE KEY uk_admin_notif_read (user_id, item_key),
+    INDEX idx_admin_notif_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Staff licences (role-based admin access invites)
 CREATE TABLE IF NOT EXISTS admin_staff_licences (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -669,9 +731,24 @@ VALUES (
 ) ON DUPLICATE KEY UPDATE email = email;
 
 -- Sample settings
-INSERT INTO settings (`key`, value, `group`, is_public) VALUES
-('site_name', 'YULO', 'general', 1),
-('site_tagline', 'Your Ultimate Lifestyle Online', 'general', 1),
-('support_email', 'vibhaahouse@gmail.com', 'general', 1),
-('support_phone', '+91 9876543210', 'general', 1)
-ON DUPLICATE KEY UPDATE value = VALUES(value);
+INSERT INTO settings (`key`, value, `group`, is_public, updated_at) VALUES
+('site_name', 'YULO', 'general', 1, NOW()),
+('site_tagline', 'Your Ultimate Lifestyle Online', 'general', 1, NOW()),
+('support_email', 'vibhaahouse@gmail.com', 'general', 1, NOW()),
+('support_phone', '+91 9876543210', 'general', 1, NOW()),
+('payment_published_gateway', '', 'payment', 1, NOW()),
+('favicon_url', '', 'branding', 0, NOW()),
+('favicon_published', '', 'branding', 1, NOW())
+ON DUPLICATE KEY UPDATE value = VALUES(value), `group` = VALUES(`group`), is_public = VALUES(is_public), updated_at = NOW();
+
+-- Default homepage sections (safe if empty)
+INSERT INTO home_sections (name, slug, description, sort_order, status, is_locked, created_at, updated_at)
+SELECT * FROM (
+    SELECT 'New Arrivals' AS name, 'new-arrivals' AS slug, 'Newest products on the homepage' AS description, 1 AS sort_order, 'active' AS status, 0 AS is_locked, NOW() AS created_at, NOW() AS updated_at
+    UNION ALL SELECT 'Trending Now', 'trending', 'Trending Styles. Better Prices.', 2, 'active', 0, NOW(), NOW()
+    UNION ALL SELECT 'Best Sellers', 'best-sellers', 'Best selling products', 3, 'active', 0, NOW(), NOW()
+    UNION ALL SELECT 'Flash Sale', 'flash-sale', 'Flash sale products', 4, 'active', 1, NOW(), NOW()
+) AS seed
+WHERE NOT EXISTS (SELECT 1 FROM home_sections LIMIT 1);
+
+SELECT 'full_final.sql applied successfully' AS info;

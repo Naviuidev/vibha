@@ -63,7 +63,7 @@ const Visitors = () => {
 
   return (
     <>
-      <Helmet><title>Visitors — YULO Admin</title></Helmet>
+      <Helmet><title>Visitors — Vibhaa Jewellery Admin</title></Helmet>
       <PageHeader
         title="Visitors"
         subtitle={`Storefront traffic · ${periodLabel}`}

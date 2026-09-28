@@ -105,6 +105,7 @@ final class PaymentController extends BaseController
         }
 
         if (($payment['order_payment_status'] ?? '') === 'paid') {
+            $this->tryNotifyPaidOrder((int) $payment['oid'], 'phonepe already paid');
             Response::jsonSuccess([
                 'order_id' => (int) $payment['oid'],
                 'payment_status' => 'paid',
@@ -727,6 +728,7 @@ final class PaymentController extends BaseController
         }
 
         if (($payment['order_payment_status'] ?? '') === 'paid') {
+            $this->tryNotifyPaidOrder((int) $payment['oid'], 'paytm already paid');
             Response::jsonSuccess([
                 'order_id' => (int) $payment['oid'],
                 'order_number' => $payment['order_number'] ?? null,
@@ -813,6 +815,7 @@ final class PaymentController extends BaseController
         }
 
         if (($payment['order_payment_status'] ?? '') === 'paid') {
+            $this->tryNotifyPaidOrder((int) $payment['order_id'], 'paytm callback already paid');
             Response::jsonSuccess([
                 'order_id' => (int) $payment['order_id'],
                 'payment_status' => 'paid',
@@ -1000,6 +1003,7 @@ final class PaymentController extends BaseController
         }
 
         if (($payment['order_payment_status'] ?? '') === 'paid') {
+            $this->tryNotifyPaidOrder((int) $payment['oid'], 'razorpay already paid');
             Response::jsonSuccess([
                 'order_id' => (int) $payment['oid'],
                 'order_number' => $payment['order_number'] ?? null,
@@ -1296,6 +1300,7 @@ final class PaymentController extends BaseController
         }
 
         if (($payment['order_payment_status'] ?? '') === 'paid') {
+            $this->tryNotifyPaidOrder((int) $payment['oid'], 'payu already paid');
             Response::jsonSuccess([
                 'order_id' => (int) $payment['oid'],
                 'order_number' => $payment['order_number'] ?? null,
@@ -1489,5 +1494,21 @@ final class PaymentController extends BaseController
         }
 
         Response::jsonSuccess(null, 'Webhook processed.');
+    }
+
+    private function tryNotifyPaidOrder(int $orderId, string $context): void
+    {
+        if ($orderId <= 0) {
+            return;
+        }
+
+        try {
+            $result = (new OrderMailService($this->db))->notifyPaidOrder($orderId);
+            if (empty($result['skipped']) && empty($result['customer'])) {
+                error_log("Order email customer not sent ({$context}) order #{$orderId}: " . json_encode($result));
+            }
+        } catch (Throwable $e) {
+            error_log("Order email notify failed ({$context}): " . $e->getMessage());
+        }
     }
 }

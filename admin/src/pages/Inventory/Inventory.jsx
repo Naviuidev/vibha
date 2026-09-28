@@ -205,7 +205,7 @@ const Inventory = () => {
 
   return (
     <>
-      <Helmet><title>Inventory — YULO Admin</title></Helmet>
+      <Helmet><title>Inventory — Vibhaa Jewellery Admin</title></Helmet>
       <PageHeader
         title="Inventory"
         subtitle={`Live stock per product · low stock ≤ ${threshold}`}

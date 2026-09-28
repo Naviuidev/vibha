@@ -258,7 +258,7 @@ const ProductForm = () => {
 
   return (
     <>
-      <Helmet><title>{isEdit ? 'Edit Product' : 'New Product'} — YULO Admin</title></Helmet>
+      <Helmet><title>{isEdit ? 'Edit Product' : 'New Product'} — Vibhaa Jewellery Admin</title></Helmet>
       <PageHeader
         title={isEdit ? 'Edit Product' : 'Add Product'}
         breadcrumbs={<Link to="/products" className="text-muted text-decoration-none">Products</Link>}

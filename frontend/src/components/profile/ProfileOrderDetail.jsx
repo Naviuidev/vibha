@@ -542,7 +542,7 @@ export default function ProfileOrderDetail({ orderId, onBack, onOrderUpdated }) 
 
                 <div className="border bg-light p-3 mt-3">
                   <div className="text-uppercase small fw-semibold mb-2" style={{ letterSpacing: '0.06em' }}>
-                    Updates from YULO
+                    Updates from Vibhaa Jewellery
                   </div>
                   {order.return.admin_notes ? (
                     <p className="small mb-0" style={{ whiteSpace: 'pre-wrap' }}>
@@ -550,16 +550,16 @@ export default function ProfileOrderDetail({ orderId, onBack, onOrderUpdated }) 
                     </p>
                   ) : returnInProcess ? (
                     <p className="small text-muted mb-0">
-                      Return is in process. Updates from YULO will be displayed here once our team reviews your
+                      Return is in process. Updates from Vibhaa Jewellery will be displayed here once our team reviews your
                       request.
                     </p>
                   ) : order.return.status === 'rejected' ? (
                     <p className="small text-muted mb-0">
-                      Your previous return was not approved. Use Help to contact YULO about this order.
+                      Your previous return was not approved. Use Help to contact Vibhaa Jewellery about this order.
                     </p>
                   ) : (
                     <p className="small text-muted mb-0">
-                      Your return has been completed. Further refund updates from YULO will appear here when
+                      Your return has been completed. Further refund updates from Vibhaa Jewellery will appear here when
                       available.
                     </p>
                   )}
@@ -567,18 +567,18 @@ export default function ProfileOrderDetail({ orderId, onBack, onOrderUpdated }) 
 
                 <div className="border p-3 mt-3">
                   <div className="text-uppercase small fw-semibold mb-2" style={{ letterSpacing: '0.06em' }}>
-                    Shared messages with YULO
+                    Shared messages with Vibhaa Jewellery
                   </div>
                   {helpMessages.length === 0 ? (
                     <p className="small text-muted mb-0">
-                      No messages yet. Use Help to contact YULO about this order — replies will show here.
+                      No messages yet. Use Help to contact Vibhaa Jewellery about this order — replies will show here.
                     </p>
                   ) : (
                     <div className="d-flex flex-column gap-3">
                       {helpMessages.map((msg) => (
                         <div key={msg.id} className="small">
                           <div className="fw-semibold text-capitalize">
-                            {msg.sender === 'admin' ? 'YULO' : 'You'}
+                            {msg.sender === 'admin' ? 'Vibhaa Jewellery' : 'You'}
                             <span className="text-muted fw-normal ms-2">
                               {msg.created_at ? formatDate(msg.created_at) : ''}
                             </span>
@@ -796,12 +796,12 @@ export default function ProfileOrderDetail({ orderId, onBack, onOrderUpdated }) 
       <Modal
         show={showHelpModal}
         onClose={closeHelpModal}
-        title="Help — contact YULO"
+        title="Help — contact Vibhaa Jewellery"
       >
         {helpSent ? (
           <>
             <p className="mb-4">
-              YULO received your response. We will get in touch with you shortly.
+              Vibhaa Jewellery received your response. We will get in touch with you shortly.
             </p>
             <div className="d-flex justify-content-end">
               <Button onClick={closeHelpModal}>Close</Button>
@@ -810,13 +810,13 @@ export default function ProfileOrderDetail({ orderId, onBack, onOrderUpdated }) 
         ) : (
           <>
             <p className="small text-muted mb-3">
-              Send a message about order #{order.order_number}. YULO will reply in Shared messages on this order.
+              Send a message about order #{order.order_number}. Vibhaa Jewellery will reply in Shared messages on this order.
             </p>
             {helpMessages.length > 0 ? (
               <div className="border p-3 mb-3" style={{ maxHeight: 180, overflowY: 'auto' }}>
                 {helpMessages.map((msg) => (
                   <div key={msg.id} className="small mb-2">
-                    <strong>{msg.sender === 'admin' ? 'YULO' : 'You'}:</strong> {msg.message}
+                    <strong>{msg.sender === 'admin' ? 'Vibhaa Jewellery' : 'You'}:</strong> {msg.message}
                   </div>
                 ))}
               </div>
@@ -840,7 +840,7 @@ export default function ProfileOrderDetail({ orderId, onBack, onOrderUpdated }) 
                 Cancel
               </Button>
               <Button loading={sendingHelp} onClick={submitHelp}>
-                Send to YULO
+                Send to Vibhaa Jewellery
               </Button>
             </div>
           </>

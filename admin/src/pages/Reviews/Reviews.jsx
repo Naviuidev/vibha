@@ -446,7 +446,7 @@ export default function Reviews() {
 
   return (
     <>
-      <Helmet><title>Reviews — YULO Admin</title></Helmet>
+      <Helmet><title>Reviews — Vibhaa Jewellery Admin</title></Helmet>
       <PageHeader
         title="Reviews"
         subtitle="Moderate customer reviews, share the write-review page, or dump static reviews"

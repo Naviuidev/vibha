@@ -1,21 +1,26 @@
 :root {
-  --yulo-black: #0a0a0a;
-  --yulo-black-light: #1a1a1a;
-  --yulo-gold: #0a0a0a;
-  --yulo-gold-light: #333333;
-  --yulo-gold-dark: #000000;
-  --yulo-gold-rgb: 10, 10, 10;
+  --yulo-teal: #005155;
+  --yulo-teal-deep: #00383b;
+  --yulo-surface: #ffffff;
+  --yulo-gold: #cbb77e;
+  --yulo-gold-light: #e4d5a8;
+  --yulo-black: #005155;
+  --yulo-black-light: #0a666b;
+  --yulo-gold-dark: #a8945c;
+  --yulo-gold-rgb: 203, 183, 126;
   --yulo-white: #ffffff;
+  --yulo-bg: #ffffff;
   --yulo-gray-50: #f7f7f8;
   --yulo-gray-100: #f0f0f2;
-  --yulo-gray-200: #e4e4e7;
-  --yulo-gray-500: #71717a;
+  --yulo-gray-200: #e8e8e8;
+  --yulo-gray-500: #6b7280;
   --yulo-sidebar-width: 260px;
   --yulo-sidebar-collapsed: 72px;
   --yulo-topbar-height: 64px;
   --yulo-radius: 12px;
   --yulo-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
   --yulo-shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --font-display: 'Cormorant Garamond', serif;
 }
 
 * {
@@ -24,35 +29,71 @@
 
 body {
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--yulo-gray-50);
-  color: var(--yulo-black);
+  background: #ffffff;
+  color: var(--yulo-teal);
   margin: 0;
   -webkit-font-smoothing: antialiased;
 }
 
-.text-gold { color: var(--yulo-black) !important; }
-.bg-gold { background-color: var(--yulo-black) !important; color: var(--yulo-white) !important; }
+.bg-white {
+  background-color: #ffffff !important;
+  color: var(--yulo-teal);
+}
+
+.dropdown-menu,
+.modal-content,
+.offcanvas,
+.accordion-item,
+.form-control,
+.form-select {
+  background-color: #ffffff;
+  color: var(--yulo-teal);
+  border-color: var(--yulo-gray-200);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #ffffff;
+  color: var(--yulo-teal);
+  border-color: var(--yulo-gold);
+  box-shadow: 0 0 0 0.2rem rgba(203, 183, 126, 0.25);
+}
+
+.form-control::placeholder {
+  color: #9ca3af;
+}
+
+.text-muted {
+  color: #6b7280 !important;
+}
+
+.text-dark {
+  color: var(--yulo-teal) !important;
+}
+
+.text-gold { color: var(--yulo-gold) !important; }
+.bg-gold { background-color: var(--yulo-gold) !important; color: var(--yulo-teal) !important; }
 .btn-gold {
-  background: var(--yulo-black);
-  border-color: var(--yulo-black);
-  color: var(--yulo-white);
+  background: var(--yulo-gold);
+  border-color: var(--yulo-gold);
+  color: var(--yulo-teal);
   font-weight: 500;
 }
 .btn-gold:hover, .btn-gold:focus {
   background: var(--yulo-gold-light);
   border-color: var(--yulo-gold-light);
-  color: var(--yulo-white);
+  color: var(--yulo-teal);
 }
 .btn-outline-gold {
-  border-color: var(--yulo-black);
-  color: var(--yulo-black);
+  border-color: var(--yulo-gold);
+  color: var(--yulo-gold);
   background: transparent;
 }
 .btn-outline-gold:hover,
 .btn-outline-gold:focus {
-  background: var(--yulo-black);
-  border-color: var(--yulo-black);
-  color: var(--yulo-white);
+  background: var(--yulo-gold);
+  border-color: var(--yulo-gold);
+  color: var(--yulo-teal);
 }
 
 /* Admin Layout */
@@ -67,8 +108,8 @@ body {
   left: 0;
   width: var(--yulo-sidebar-width);
   height: 100vh;
-  background: var(--yulo-white);
-  color: var(--yulo-black);
+  background: #ffffff;
+  color: var(--yulo-teal);
   border-right: 1px solid var(--yulo-gray-200);
   display: flex;
   flex-direction: column;
@@ -90,18 +131,19 @@ body {
 }
 
 .yulo-sidebar__logo {
-  width: 110px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
-  object-position: left center;
+  object-position: center;
   background: transparent;
   flex-shrink: 0;
+  border-radius: 4px;
 }
 
 .yulo-sidebar__title {
   font-weight: 600;
   font-size: 0.95rem;
-  color: var(--yulo-black);
+  color: var(--yulo-teal);
   white-space: nowrap;
 }
 
@@ -134,13 +176,13 @@ body {
 }
 
 .yulo-sidebar__link:hover {
-  color: var(--yulo-black);
+  color: var(--yulo-teal);
   background: var(--yulo-gray-100);
 }
 
 .yulo-sidebar__link--active {
-  color: #fff !important;
-  background: var(--yulo-black) !important;
+  color: var(--yulo-teal) !important;
+  background: var(--yulo-gold) !important;
   font-weight: 500;
 }
 
@@ -178,8 +220,8 @@ body {
 
 .yulo-sidebar__link--active .yulo-sidebar__plan-pill--free {
   background: transparent !important;
-  color: #fff !important;
-  border-color: #fff !important;
+  color: var(--yulo-teal) !important;
+  border-color: var(--yulo-teal) !important;
 }
 
 .yulo-sidebar__toggle {
@@ -189,8 +231,8 @@ body {
   width: 32px;
   height: 32px;
   border: 1px solid var(--yulo-gray-200);
-  background: var(--yulo-white);
-  color: var(--yulo-black);
+  background: #ffffff;
+  color: var(--yulo-teal);
   border-radius: 8px;
   align-items: center;
   justify-content: center;
@@ -223,7 +265,7 @@ body {
   position: sticky;
   top: 0;
   height: var(--yulo-topbar-height);
-  background: var(--yulo-white);
+  background: var(--yulo-bg);
   border-bottom: 1px solid var(--yulo-gray-200);
   display: flex;
   align-items: center;
@@ -233,7 +275,7 @@ body {
 }
 
 .yulo-topbar__menu {
-  color: var(--yulo-black);
+  color: var(--yulo-teal);
   padding: 0;
 }
 
@@ -299,7 +341,7 @@ body {
 
 /* Cards & Tables */
 .yulo-card {
-  background: var(--yulo-white);
+  background: var(--yulo-bg);
   border-radius: var(--yulo-radius);
   box-shadow: var(--yulo-shadow);
   border: 1px solid var(--yulo-gray-200);
@@ -354,7 +396,7 @@ body {
 
 /* Stat Cards */
 .yulo-stat-card {
-  background: var(--yulo-white);
+  background: var(--yulo-bg);
   border-radius: var(--yulo-radius);
   box-shadow: var(--yulo-shadow);
   border: 1px solid var(--yulo-gray-200);
@@ -408,8 +450,11 @@ body {
 
 /* Page Header */
 .yulo-page-title {
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--yulo-teal);
 }
 
 .yulo-badge {
@@ -430,7 +475,7 @@ body {
 
 .yulo-badge--light,
 .badge.yulo-badge--light {
-  background-color: #ffffff !important;
+  background-color: var(--yulo-bg) !important;
   color: #111111 !important;
   border-color: #111111;
 }
@@ -445,19 +490,23 @@ body {
   height: 320px;
 }
 
-/* Login — split layout (60% image / 40% form) */
+/* Login — split layout locked to the viewport (no page scroll) */
 .yulo-login-page {
-  min-height: 100vh;
-  min-height: 100dvh;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
   display: grid;
   grid-template-columns: 60% 40%;
-  background: #0a0a0a;
+  background: #ffffff;
 }
 
 .yulo-login-page__visual {
   position: relative;
-  min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 0;
+  height: 100%;
   overflow: hidden;
   background: #111;
 }
@@ -466,7 +515,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: 50% 42%;
   display: block;
 }
 
@@ -474,11 +523,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2.5rem 2rem;
-  background: #0a0a0a;
-  min-height: 100vh;
-  min-height: 100dvh;
-  overflow-y: auto;
+  padding: 2rem 2rem;
+  background: #ffffff;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 .yulo-login-page__content {
@@ -486,21 +535,38 @@ body {
   max-width: 380px;
 }
 
+.yulo-login-page .yulo-login__logo {
+  width: 96px;
+  height: 96px;
+  margin-bottom: 16px;
+}
+
 @media (max-width: 991.98px) {
   .yulo-login-page {
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(220px, 36vh) 1fr;
+    grid-template-rows: minmax(120px, 28vh) minmax(0, 1fr);
   }
 
   .yulo-login-page__visual {
-    min-height: 220px;
-    height: 36vh;
+    height: auto;
+  }
+
+  .yulo-login-page__img {
+    object-position: 50% 62%;
   }
 
   .yulo-login-page__panel {
-    min-height: auto;
-    padding: 2rem 1.5rem 2.5rem;
-    align-items: flex-start;
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+
+  .yulo-login-page .yulo-login__logo {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 10px;
+  }
+
+  .yulo-login-page .yulo-login__header {
+    margin-bottom: 18px;
   }
 }
 
@@ -510,15 +576,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0a0a0a;
+  background: #ffffff;
   padding: 24px;
 }
 
 .yulo-login__card {
   width: 100%;
   max-width: 400px;
-  background: #111111;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #ffffff;
+  border: 1px solid var(--yulo-gray-200);
   border-radius: 16px;
   padding: 40px 32px;
 }
@@ -529,23 +595,26 @@ body {
 }
 
 .yulo-login__logo {
-  width: 160px;
-  height: 44px;
+  width: 128px;
+  height: 128px;
   object-fit: contain;
   margin: 0 auto 20px;
   display: block;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(197, 165, 90, 0.35);
 }
 
 .yulo-login__title {
-  font-size: 1.375rem;
-  font-weight: 600;
-  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--yulo-teal);
   margin: 0 0 6px;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.06em;
 }
 
 .yulo-login__subtitle {
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--yulo-gray-500);
   font-size: 0.875rem;
   margin: 0;
 }
@@ -565,16 +634,16 @@ body {
 .yulo-login__field label {
   font-size: 0.8125rem;
   font-weight: 500;
-  color: #ffffff;
+  color: var(--yulo-teal);
 }
 
 .yulo-login__field input {
   width: 100%;
-  background: #0a0a0a;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: #ffffff;
+  border: 1px solid var(--yulo-gray-200);
   border-radius: 10px;
   padding: 12px 14px;
-  color: #ffffff;
+  color: var(--yulo-teal);
   font-size: 0.9375rem;
   font-family: inherit;
   outline: none;
@@ -582,16 +651,16 @@ body {
 }
 
 .yulo-login-page__content .yulo-login__field input {
-  background: #111111;
+  background: #ffffff;
 }
 
 .yulo-login__field input::placeholder {
-  color: rgba(255, 255, 255, 0.35);
+  color: #9ca3af;
 }
 
 .yulo-login__field input:focus {
-  border-color: rgba(255, 255, 255, 0.55);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+  border-color: var(--yulo-gold);
+  box-shadow: 0 0 0 3px rgba(203, 183, 126, 0.15);
 }
 
 .yulo-login__field input.is-invalid {
@@ -600,17 +669,17 @@ body {
 
 .yulo-login__error {
   font-size: 0.75rem;
-  color: #ff8a8a;
+  color: #dc3545;
 }
 
 .yulo-login__btn {
   margin-top: 8px;
   width: 100%;
-  border: 1px solid #ffffff;
+  border: 1px solid var(--yulo-gold);
   border-radius: 10px;
   padding: 13px 16px;
-  background: #ffffff;
-  color: #0a0a0a;
+  background: var(--yulo-gold);
+  color: var(--yulo-teal);
   font-size: 0.9375rem;
   font-weight: 600;
   font-family: inherit;
@@ -619,8 +688,8 @@ body {
 }
 
 .yulo-login__btn:hover:not(:disabled) {
-  background: transparent;
-  color: #ffffff;
+  background: var(--yulo-gold-light);
+  color: var(--yulo-teal);
 }
 
 .yulo-login__btn:active:not(:disabled) {
@@ -642,23 +711,23 @@ body {
 .yulo-login__btn--ghost {
   margin-top: 0;
   background: transparent;
-  color: #ffffff;
+  color: var(--yulo-teal);
 }
 
 .yulo-login__btn--ghost:hover:not(:disabled) {
-  background: #ffffff;
-  color: #0a0a0a;
+  background: var(--yulo-gray-100);
+  color: var(--yulo-teal);
 }
 
 .yulo-onboard-msg {
-  color: #ffffff;
+  color: var(--yulo-teal);
   font-size: 0.9375rem;
   line-height: 1.55;
   margin: 0;
 }
 
 .yulo-onboard-msg strong {
-  color: #ffffff;
+  color: var(--yulo-teal);
   font-weight: 600;
 }
 
@@ -667,32 +736,32 @@ body {
 }
 
 .yulo-licence-steps--on-dark .yulo-licence-step {
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--yulo-gray-500);
 }
 
 .yulo-licence-steps--on-dark .yulo-licence-step em {
-  border-color: rgba(255, 255, 255, 0.25);
-  color: rgba(255, 255, 255, 0.7);
+  border-color: var(--yulo-gray-200);
+  color: var(--yulo-teal);
 }
 
 .yulo-licence-steps--on-dark .yulo-licence-step.is-active {
-  color: #ffffff;
+  color: var(--yulo-teal);
 }
 
 .yulo-licence-steps--on-dark .yulo-licence-step.is-active em {
-  background: #ffffff;
-  border-color: #ffffff;
-  color: #0a0a0a;
+  background: var(--yulo-gold);
+  border-color: var(--yulo-gold);
+  color: var(--yulo-teal);
 }
 
 .yulo-licence-steps--on-dark .yulo-licence-step.is-done {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--yulo-teal);
 }
 
 .yulo-licence-steps--on-dark .yulo-licence-step.is-done em {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #ffffff;
+  background: var(--yulo-gray-100);
+  border-color: var(--yulo-gray-200);
+  color: var(--yulo-teal);
 }
 
 /* Loader */
@@ -729,7 +798,7 @@ body {
   padding: 0.85rem 1rem;
   border: 1px solid var(--yulo-gray-200);
   border-radius: 8px;
-  background: #fff;
+  background: var(--yulo-bg);
   color: #111;
   text-align: left;
   transition: border-color 0.15s ease, background 0.15s ease;
@@ -781,7 +850,7 @@ body {
   width: 100%;
   max-width: 420px;
   text-align: center;
-  background: var(--yulo-white);
+  background: var(--yulo-bg);
   border: 1px solid var(--yulo-gray-200);
   border-radius: var(--yulo-radius);
   box-shadow: var(--yulo-shadow);
@@ -825,7 +894,7 @@ body {
 
 /* Forms */
 .yulo-form-card {
-  background: var(--yulo-white);
+  background: var(--yulo-bg);
   border-radius: var(--yulo-radius);
   box-shadow: var(--yulo-shadow);
   border: 1px solid var(--yulo-gray-200);
@@ -909,7 +978,7 @@ body {
   padding: 8px;
   border: 1px solid var(--yulo-gray-200);
   border-radius: 8px;
-  background: #fff;
+  background: var(--yulo-bg);
 }
 
 .yulo-color-slot__picker {
@@ -934,7 +1003,7 @@ body {
   padding: 8px 12px;
   border: 1px solid var(--yulo-gray-200);
   border-radius: 8px;
-  background: #fff;
+  background: var(--yulo-bg);
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -1104,7 +1173,7 @@ body {
 
 .Toastify__toast--success,
 .Toastify__toast--error {
-  background: #fff !important;
+  background: var(--yulo-bg) !important;
   color: #111 !important;
   border: 1px solid #e5e5e5 !important;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.16) !important;
@@ -1235,7 +1304,7 @@ body {
   border-radius: 12px;
   border: 1px solid var(--yulo-gray-200);
   font-size: 0.95rem;
-  background: #fff;
+  background: var(--yulo-bg);
 }
 
 .yulo-doc-search .form-control:focus {
@@ -1266,8 +1335,8 @@ body {
   align-items: center;
   gap: 6px;
   border: 1px solid var(--yulo-gray-200);
-  background: #fff;
-  color: #333;
+  background: var(--yulo-bg);
+  color: var(--yulo-teal);
   border-radius: 999px;
   padding: 6px 12px;
   font-size: 0.8rem;
@@ -1281,18 +1350,18 @@ body {
   border-radius: 999px;
   padding: 0 6px;
   font-size: 0.72rem;
-  color: #555;
+  color: var(--yulo-gray-500);
 }
 
 .yulo-doc-cat.is-active {
-  background: #111;
-  border-color: #111;
-  color: #fff;
+  background: var(--yulo-gold);
+  border-color: var(--yulo-gold);
+  color: var(--yulo-teal);
 }
 
 .yulo-doc-cat.is-active em {
-  background: rgba(255, 255, 255, 0.18);
-  color: #fff;
+  background: rgba(0, 81, 85, 0.18);
+  color: var(--yulo-teal);
 }
 
 /* Featured Collection admin preview (mirrors storefront grid) */
@@ -1450,7 +1519,7 @@ body {
 }
 
 .yulo-doc-card {
-  background: #fff;
+  background: var(--yulo-bg);
   border: 1px solid var(--yulo-gray-200);
   border-radius: 12px;
   overflow: hidden;
@@ -1565,7 +1634,7 @@ body {
   font-size: 0.78rem;
   color: #222;
   word-break: break-all;
-  background: #fff;
+  background: var(--yulo-bg);
   border: 1px solid var(--yulo-gray-200);
   border-radius: 4px;
   padding: 4px 8px;
@@ -1633,7 +1702,7 @@ body {
   text-align: center;
   padding: 48px 16px;
   color: var(--yulo-gray-500);
-  background: #fff;
+  background: var(--yulo-bg);
   border: 1px dashed var(--yulo-gray-200);
   border-radius: 12px;
 }
@@ -1686,7 +1755,7 @@ body {
 
 .yulo-review-admin__card {
   border: 1px solid var(--yulo-gray-200);
-  background: #fff;
+  background: var(--yulo-bg);
   padding: 1.15rem 1.25rem;
 }
 
@@ -1719,14 +1788,14 @@ body {
 .yulo-review-admin__share {
   max-width: 640px;
   border: 1px solid var(--yulo-gray-200);
-  background: #fff;
+  background: var(--yulo-bg);
   padding: 1.25rem;
 }
 
 /* Instagram feed admin */
 .yulo-insta-admin__creds {
   border: 1px solid var(--yulo-gray-200);
-  background: #fff;
+  background: var(--yulo-bg);
   padding: 1.15rem 1.25rem;
 }
 
@@ -1738,7 +1807,7 @@ body {
 
 .yulo-insta-admin__card {
   border: 1px solid var(--yulo-gray-200);
-  background: #fff;
+  background: var(--yulo-bg);
   overflow: hidden;
 }
 
@@ -1840,7 +1909,7 @@ body {
   cursor: pointer;
   font-size: 0.8125rem;
   margin: 0;
-  background: #fff;
+  background: var(--yulo-bg);
 }
 
 .yulo-licence-feature.is-on {
@@ -1865,7 +1934,7 @@ body {
   width: 100%;
   text-align: left;
   border: 1px solid #e8e8e8;
-  background: #fff;
+  background: var(--yulo-bg);
   border-radius: 14px;
   padding: 1rem 1.1rem;
   cursor: pointer;
@@ -1996,7 +2065,7 @@ body {
   width: 100%;
   text-align: left;
   border: 1px solid #e8e8e8;
-  background: #fff;
+  background: var(--yulo-bg);
   border-radius: 14px;
   padding: 1.1rem 1.15rem;
   cursor: pointer;
@@ -2048,7 +2117,7 @@ body {
   display: inline-flex;
   align-items: center;
   border: 1px solid #e5e5e5;
-  background: #fff;
+  background: var(--yulo-bg);
   border-radius: 999px;
   padding: 0.45rem 0.9rem;
   font-size: 0.8125rem;
@@ -2067,7 +2136,7 @@ body {
   border-radius: 12px;
   max-height: 280px;
   overflow: auto;
-  background: #fff;
+  background: var(--yulo-bg);
 }
 
 .yulo-marketing-recipient {
@@ -2159,7 +2228,7 @@ body {
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
   border: 1px solid #111;
-  background: #fff;
+  background: var(--yulo-bg);
   color: #111;
   font-size: 0.68rem;
   font-weight: 600;
@@ -2256,7 +2325,7 @@ body {
   padding: 0.55rem 0.4rem;
   border: 1px solid #ececec;
   border-radius: 10px;
-  background: #fff;
+  background: var(--yulo-bg);
   color: #111;
   text-align: center;
 }
@@ -2300,7 +2369,7 @@ body {
 .yulo-mkt-free-upgrade__field input,
 .yulo-mkt-free-upgrade__field textarea {
   width: 100%;
-  background: #fff;
+  background: var(--yulo-bg);
   border: 1px solid #e0e0e0;
   border-radius: 10px;
   padding: 12px 14px;
@@ -2390,7 +2459,7 @@ body {
   width: 100%;
   text-align: left;
   border: 1px solid #e8e8e8;
-  background: #fff;
+  background: var(--yulo-bg);
   border-radius: 14px;
   padding: 1.05rem 1.1rem;
   cursor: pointer;

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import api from '../../services/api';
 
 const FALLBACK_TEXT =
-  'Free shipping on orders above ₹999 · Premium eyewear collection now live';
+  'Free Delivery all over India · Beautiful jewellery for every occasion';
 
 /** Seconds to cross the screen once — slow, readable pace (similar to old marquee). */
 function runDuration(text) {

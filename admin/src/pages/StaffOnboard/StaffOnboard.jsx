@@ -7,8 +7,7 @@ import { staffOnboardService } from '../../services/staffLicenceService';
 import YuloLogo from '../../components/common/YuloLogo';
 import { useAuth } from '../../context/AuthContext';
 
-const LOGIN_HERO_IMG =
-  'https://i.postimg.cc/yNs3B4gL/file-000000006b488208884958b1ad97d7fb.png';
+const LOGIN_HERO_IMG = `${import.meta.env.BASE_URL}login-hero.png`;
 
 const STEPS = [
   { id: 1, label: 'Verify email OTP' },
@@ -126,7 +125,7 @@ export default function StaffOnboard() {
   return (
     <>
       <Helmet>
-        <title>Staff setup — YULO Admin</title>
+        <title>Staff setup — Vibhaa Jewellery Admin</title>
       </Helmet>
       <div className="yulo-login-page">
         <div className="yulo-login-page__visual" aria-hidden="true">
@@ -148,7 +147,7 @@ export default function StaffOnboard() {
             <div className="yulo-login__header">
               <YuloLogo variant="light" className="yulo-login__logo" />
               <h1 className="yulo-login__title">Staff access setup</h1>
-              <p className="yulo-login__subtitle">Complete your invite to join YULO Admin</p>
+              <p className="yulo-login__subtitle">Complete your invite to join Vibhaa Jewellery Admin</p>
             </div>
 
             {loading ? (

@@ -75,7 +75,7 @@ export default function Shop() {
 
   return (
     <>
-      <SEO title="Shop" description="Browse YULO premium fashion collection." />
+      <SEO title="Shop" description="Browse the Vibhaa Jewellery collection." />
       <div className="page-header">
         <div className="container">
           <Breadcrumb items={[{ label: 'Shop' }]} />

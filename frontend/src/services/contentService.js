@@ -19,7 +19,7 @@ export const blogService = {
           success: true,
           data: {
             ...blog,
-            content: `<p>${blog.excerpt}</p><p>Explore the world of YULO fashion with our curated editorial content.</p>`,
+            content: `<p>${blog.excerpt}</p><p>Explore the world of Vibhaa Jewellery with our curated editorial content.</p>`,
           },
         },
       };

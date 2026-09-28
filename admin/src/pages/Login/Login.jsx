@@ -10,8 +10,7 @@ import Loader from '../../components/common/Loader';
 import YuloLogo from '../../components/common/YuloLogo';
 import { navItemsForUser } from '../../utils/constants';
 
-const LOGIN_HERO_IMG =
-  'https://i.postimg.cc/yNs3B4gL/file-000000006b488208884958b1ad97d7fb.png';
+const LOGIN_HERO_IMG = `${import.meta.env.BASE_URL}login-hero.png`;
 
 function homePathForUser(user) {
   return navItemsForUser(user)[0]?.path || '/';
@@ -84,7 +83,7 @@ const Login = () => {
 
   return (
     <>
-      <Helmet><title>Login — YULO Admin</title></Helmet>
+      <Helmet><title>Login — Vibhaa Jewellery Admin</title></Helmet>
       <div className="yulo-login-page">
         <div className="yulo-login-page__visual" aria-hidden="true">
           <img
@@ -135,7 +134,7 @@ const Login = () => {
                 {errors.password && <span className="yulo-login__error">{errors.password.message}</span>}
               </div>
 
-              <button type="submit" className="btn btn-outline-light rounded-pill px-4 w-100" disabled={loading}>
+              <button type="submit" className="yulo-login__btn" disabled={loading}>
                 {loading ? (
                   <span className="spinner-border spinner-border-sm" />
                 ) : (

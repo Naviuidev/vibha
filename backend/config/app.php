@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'name' => $_ENV['APP_NAME'] ?? 'YULO',
+    'name' => $_ENV['APP_NAME'] ?? 'Vibhaa Jewellery',
     'env' => $_ENV['APP_ENV'] ?? 'local',
     'debug' => filter_var($_ENV['APP_DEBUG'] ?? false, FILTER_VALIDATE_BOOLEAN),
     'url' => rtrim($_ENV['APP_URL'] ?? 'http://localhost/yulo/backend', '/'),
@@ -16,7 +16,7 @@ return [
         'expiry' => (int) ($_ENV['JWT_EXPIRY'] ?? 3600),
         'refresh_expiry' => (int) ($_ENV['JWT_REFRESH_EXPIRY'] ?? 604800),
         'algorithm' => 'HS256',
-        'issuer' => $_ENV['APP_NAME'] ?? 'YULO',
+        'issuer' => $_ENV['APP_NAME'] ?? 'Vibhaa Jewellery',
     ],
     'upload' => [
         'path' => dirname(__DIR__) . '/' . ltrim($_ENV['UPLOAD_PATH'] ?? 'uploads', '/'),
@@ -25,12 +25,14 @@ return [
         'allowed_extensions' => ['jpg', 'jpeg', 'png', 'webp', 'gif', 'pdf'],
     ],
     'mail' => [
+        'mailer' => $_ENV['MAIL_MAILER'] ?? 'smtp',
         'host' => $_ENV['MAIL_HOST'] ?? 'smtp.gmail.com',
         'port' => (int) ($_ENV['MAIL_PORT'] ?? 587),
         'username' => $_ENV['MAIL_USERNAME'] ?? '',
         'password' => $_ENV['MAIL_PASSWORD'] ?? '',
-        'from_address' => $_ENV['MAIL_FROM_ADDRESS'] ?? 'noreply@yulo.com',
-        'from_name' => $_ENV['MAIL_FROM_NAME'] ?? 'YULO',
+        'from_address' => $_ENV['MAIL_FROM_ADDRESS'] ?? 'noreply@vibhaajewellery.in',
+        'from_name' => $_ENV['MAIL_FROM_NAME'] ?? 'Vibhaa Jewellery',
+        'reply_to' => $_ENV['MAIL_REPLY_TO'] ?? $_ENV['OWNER_EMAIL'] ?? $_ENV['MAIL_FROM_ADDRESS'] ?? '',
     ],
     'phonepe' => [
         'client_id' => $_ENV['PHONEPE_CLIENT_ID'] ?? '',

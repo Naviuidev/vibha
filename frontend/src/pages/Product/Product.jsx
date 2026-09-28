@@ -21,11 +21,31 @@ import { CompareContext } from '../../context/CompareContext';
 import { useContext } from 'react';
 import { productService } from '../../services/productService';
 import { COLORS, SIZES } from '../../utils/constants';
-import { getProductColorOptions, getProductSizeOptions } from '../../utils/formatPrice';
+import { formatPrice, getEffectivePrice, getProductColorOptions, getProductSizeOptions } from '../../utils/formatPrice';
 import { getProductImages } from '../../utils/helpers';
+import api from '../../services/api';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
+
+function buildWhatsAppEnquiryUrl({ product, quantity, selectedSize, selectedColor, waNumber }) {
+  const price = formatPrice(getEffectivePrice(product));
+  const lines = [
+    'Hi Vibhaa Jewellery, I would like to enquire about this product:',
+    '',
+    `Product: ${product.name}`,
+  ];
+  if (product.sku) lines.push(`SKU: ${product.sku}`);
+  if (product.category_name) lines.push(`Category: ${product.category_name}`);
+  lines.push(`Price: ${price}`);
+  if (selectedSize) lines.push(`Size: ${selectedSize}`);
+  if (selectedColor) lines.push(`Colour: ${selectedColor}`);
+  lines.push(`Quantity: ${quantity}`);
+  if (typeof window !== 'undefined') {
+    lines.push(`Link: ${window.location.origin}/product/${product.slug}`);
+  }
+  return `https://wa.me/${waNumber}?text=${encodeURIComponent(lines.join('\n'))}`;
+}
 
 export default function Product() {
   const { slug } = useParams();
@@ -41,6 +61,7 @@ export default function Product() {
   const [selectedColor, setSelectedColor] = useState('');
   const [activeTab, setActiveTab] = useState('description');
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [waNumber, setWaNumber] = useState('');
 
   const { addToCart } = useCart();
   const { isAuthenticated } = useAuth();
@@ -72,6 +93,21 @@ export default function Product() {
       }
     }).finally(() => setLoading(false));
   }, [slug]);
+
+  useEffect(() => {
+    let cancelled = false;
+    api
+      .get('/whatsapp')
+      .then((res) => {
+        if (cancelled) return;
+        const digits = String(res.data?.data?.number || '').replace(/\D+/g, '');
+        if (digits) setWaNumber(digits);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   if (loading) return <Loader fullScreen />;
   if (!product) return <div className="container py-5 text-center">Product not found</div>;
@@ -200,14 +236,33 @@ export default function Product() {
                   <i className="bi bi-arrow-left-right" />
                 </Button>
               </div>
-              <Button
-                variant="primary"
-                className="product-actions__buy"
-                loading={buying}
-                onClick={handleBuyNow}
-              >
-                Buy Now
-              </Button>
+              <div className="product-actions__cta">
+                <Button
+                  variant="primary"
+                  className="product-actions__buy"
+                  loading={buying}
+                  onClick={handleBuyNow}
+                >
+                  Buy Now
+                </Button>
+                {waNumber ? (
+                  <a
+                    className="btn-yulo product-actions__enquiry"
+                    href={buildWhatsAppEnquiryUrl({
+                      product,
+                      quantity,
+                      selectedSize,
+                      selectedColor,
+                      waNumber,
+                    })}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i className="bi bi-whatsapp" aria-hidden="true" />
+                    Enquiry
+                  </a>
+                ) : null}
+              </div>
             </div>
 
             <div className="yulo-product-tabs mb-3 mt-2">
@@ -251,7 +306,7 @@ export default function Product() {
             )}
             {activeTab === 'shipping' && (
               <div className="pb-2 text-muted">
-                <p className="mb-0">Free shipping on orders above ₹999. Standard delivery 3-5 business days. Express shipping available at checkout.</p>
+                <p className="mb-0">Free Shipping All Over India. Standard delivery 10-14 Business Days.</p>
               </div>
             )}
             {activeTab === 'returns' && (
@@ -266,7 +321,7 @@ export default function Product() {
                   <li>Your order ID.</li>
                 </ul>
                 <p className="yulo-product-policy__note mb-0">
-                  After verification, YULO will arrange a replacement or refund.
+                  After verification, Vibhaa Jewellery will arrange a replacement or refund.
                 </p>
               </div>
             )}

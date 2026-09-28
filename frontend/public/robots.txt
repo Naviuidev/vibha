@@ -9,5 +9,7 @@ Disallow: /wishlist
 Disallow: /compare
 Disallow: /login
 Disallow: /register
+Disallow: /admin
+Disallow: /backend
 
-Sitemap: https://yulo.com/sitemap.xml
+Sitemap: https://vibhaajewellery.in/sitemap.xml

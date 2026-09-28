@@ -3,6 +3,7 @@ import SEO from '../../components/common/SEO';
 import Breadcrumb from '../../components/common/Breadcrumb';
 import ContactForm from '../../components/forms/ContactForm';
 import api from '../../services/api';
+import { SUPPORT_EMAIL } from '../../utils/constants';
 
 function formatWhatsAppDisplay(raw) {
   const digits = String(raw || '').replace(/\D+/g, '');
@@ -47,7 +48,7 @@ export default function Contact() {
 
   return (
     <>
-      <SEO title="Contact Us" description="Get in touch with the YULO team." />
+      <SEO title="Contact Us" description="Get in touch with the Vibhaa Jewellery team." />
       <div className="page-header">
         <div className="container">
           <Breadcrumb items={[{ label: 'Contact' }]} />
@@ -65,8 +66,8 @@ export default function Contact() {
             <div className="d-flex flex-column gap-3">
               <div>
                 <i className="bi bi-envelope me-2" />
-                <a href="mailto:helloyulowear@gmail.com" className="text-decoration-none text-dark">
-                  helloyulowear@gmail.com
+                <a href={`mailto:${SUPPORT_EMAIL}`} className="text-decoration-none text-dark">
+                  {SUPPORT_EMAIL}
                 </a>
               </div>
               {whatsapp.enabled !== false ? (
@@ -84,7 +85,11 @@ export default function Contact() {
               ) : null}
               <div>
                 <i className="bi bi-geo-alt me-2" />
-                52-99, Ayyappa Society, Madhapur, Hyderabad, Telangana 500008
+                Flat No- 54-18, Opposite to Bollineni Homes,Sreenivasa Residency, Ayyappa Society, Madhapur, Hyderabad, Telangana 500081
+              </div>
+              <div>
+                <i className="bi bi-geo-alt me-2" />
+                House No: 15-4, Beach Road, Tirumalai Enclave, Thiruvanmayur, ECR, Chennai, Tamil Nadu 600041
               </div>
             </div>
           </div>

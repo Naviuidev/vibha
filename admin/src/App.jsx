@@ -15,10 +15,12 @@ function ToastIcon({ type }) {
   return false;
 }
 
+const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, '') || undefined;
+
 const App = () => (
   <HelmetProvider>
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={routerBasename}>
         <AdminFavicon />
         <AppRoutes />
         <ToastContainer

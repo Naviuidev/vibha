@@ -76,7 +76,7 @@ const FAQs = () => {
 
   return (
     <>
-      <Helmet><title>FAQs — YULO Admin</title></Helmet>
+      <Helmet><title>FAQs — Vibhaa Jewellery Admin</title></Helmet>
       <PageHeader title="FAQs" subtitle="Manage frequently asked questions" />
 
       <div className="row g-4">

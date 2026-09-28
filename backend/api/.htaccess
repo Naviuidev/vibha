@@ -1,8 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    # Production (api.yulowear.in): /api/
-    # Local XAMPP fallback path was /yulo/backend/api/
-    RewriteBase /api/
+    # Works for /api/ (subdomain) and /backend/api/ (subdirectory)
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

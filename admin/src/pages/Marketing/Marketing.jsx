@@ -616,7 +616,7 @@ export default function Marketing() {
   return (
     <>
       <Helmet>
-        <title>Marketing — YULO Admin</title>
+        <title>Marketing — Vibhaa Jewellery Admin</title>
       </Helmet>
       <PageHeader
         title="Marketing"

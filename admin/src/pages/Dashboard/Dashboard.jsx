@@ -34,7 +34,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <Helmet><title>Dashboard — YULO Admin</title></Helmet>
+      <Helmet><title>Dashboard — Vibhaa Jewellery Admin</title></Helmet>
       <PageHeader
         title="Dashboard"
         subtitle="Overview, analytics, revenue, and exportable reports"

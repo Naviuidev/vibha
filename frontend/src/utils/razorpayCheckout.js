@@ -63,7 +63,7 @@ export async function openRazorpayCheckout({
   amount,
   currency = 'INR',
   orderId,
-  name = 'YULO',
+  name = 'Vibhaa Jewellery',
   description = 'Order payment',
   prefill = {},
   themeColor = '#072654',

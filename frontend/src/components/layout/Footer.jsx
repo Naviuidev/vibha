@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import YuloLogo from '../common/YuloLogo';
-import NewsletterForm from '../forms/NewsletterForm';
 import { BRAND_TAGLINE } from '../../utils/constants';
 import api from '../../services/api';
 
@@ -15,7 +14,7 @@ const FOOTER_LINKS = {
   Help: [
     { to: '/track-order', label: 'Track Order' },
     { to: '/contact', label: 'Contact Us' },
-    { to: '/about', label: 'About YULO' },
+    { to: '/about', label: 'About Vibhaa Jewellery' },
     { to: '/shipping-policy', label: 'Shipping Policy' },
     { to: '/returns-policy', label: 'Returns & Refunds' },
     { to: '/terms', label: 'Terms & Conditions' },
@@ -49,7 +48,7 @@ export default function Footer() {
     <footer className="yulo-footer">
       <div className="container">
         <div className="row g-4 mb-5">
-          <div className="col-lg-4">
+          <div className="col-lg-6">
             <YuloLogo variant="light" className="yulo-footer__logo" />
             <p className="small opacity-75 mb-3">{BRAND_TAGLINE}</p>
             {socials.length ? (
@@ -60,7 +59,7 @@ export default function Footer() {
                     href={s.url}
                     target="_blank"
                     rel="noreferrer"
-                    aria-label={`YULO on ${s.label || s.platform}`}
+                    aria-label={`Vibhaa Jewellery on ${s.label || s.platform}`}
                   >
                     <i className={`bi ${s.icon || 'bi-link-45deg'} fs-5`} />
                   </a>
@@ -80,13 +79,9 @@ export default function Footer() {
               </ul>
             </div>
           ))}
-          <div className="col-12 col-md-6 col-lg-2">
-            <h6>Newsletter</h6>
-            <NewsletterForm />
-          </div>
         </div>
         <div className="yulo-footer__bottom">
-          <span>© {new Date().getFullYear()} YULO. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Vibhaa Jewellery. All rights reserved.</span>
           <div className="d-flex flex-wrap gap-3 justify-content-center">
             <Link to="/terms">Terms</Link>
             <Link to="/shipping-policy">Shipping</Link>

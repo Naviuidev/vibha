@@ -1,78 +1,58 @@
-import { Link } from 'react-router-dom';
 import LegalPage, { LegalSection } from '../../components/legal/LegalPage';
 import { BRAND_NAME } from '../../utils/constants';
 
 export default function ReturnsPolicy() {
   return (
     <LegalPage
-      title="Returns & Refunds"
-      description={`${BRAND_NAME} returns and refunds policy — damaged items, replacements, and refund timelines.`}
+      title="Returns & Refunds Policy"
+      description={`${BRAND_NAME} returns and refunds policy — no change-of-mind returns; replacement only for damaged or incorrect products.`}
+      updated="20 September 2026"
     >
-      <LegalSection title="1. Our promise">
+      <p className="text-muted mb-4">
+        At {BRAND_NAME}, we carefully check every order before dispatch to ensure it reaches you in
+        good condition.
+      </p>
+
+      <LegalSection title="No Returns or Refunds">
         <p>
-          We want you to be happy with your purchase. If an item arrives damaged, defective, or
-          incorrect, we will help with a replacement or refund as described below.
+          We do not accept returns or provide refunds for change of mind, wrong selection, or any
+          other personal reason.
         </p>
       </LegalSection>
 
-      <LegalSection title="2. What can be returned">
-        <ul className="mb-0 ps-3">
-          <li className="mb-2">
-            Damaged, defective, or wrong items reported within <strong>7 days</strong> of delivery,
-            with clear photos and your order number.
-          </li>
-          <li className="mb-2">
-            Items must be unused, with original tags and packaging where applicable (unless the damage
-            prevents this).
-          </li>
-          <li>
-            Personalised, intimate, or hygiene-sensitive products may not be eligible unless they
-            arrive damaged or defective.
-          </li>
-        </ul>
-      </LegalSection>
-
-      <LegalSection title="3. What is not eligible">
-        <ul className="mb-0 ps-3">
-          <li className="mb-2">Change-of-mind returns after successful delivery (unless we announce otherwise).</li>
-          <li className="mb-2">Normal wear, misuse, or damage after delivery.</li>
-          <li>Products marked as final sale / non-returnable on the product page.</li>
-        </ul>
-      </LegalSection>
-
-      <LegalSection title="4. How to request a return">
+      <LegalSection title="Damaged or Incorrect Products">
         <p>
-          Contact us via the <Link to="/contact">Contact</Link> page with your order number, product
-          details, and photos of the issue. Our team will confirm eligibility and share the next
-          steps (pickup or self-ship instructions).
+          If you receive a damaged or incorrect product, please contact us as soon as possible after
+          delivery.
         </p>
       </LegalSection>
 
-      <LegalSection title="5. Replacements & refunds">
+      <LegalSection title="Unboxing Video Required">
         <p>
-          Eligible cases may be resolved with a replacement (subject to stock) or a refund to the
-          original payment method for prepaid orders. COD refunds are typically issued via bank
-          transfer / UPI after we receive your account details. Refund timelines depend on your bank
-          or payment partner and usually complete within 5–10 business days after approval.
+          A single, continuous 360° unboxing video without cuts or edits is mandatory to verify any
+          damage or incorrect product claim. Claims without a proper unboxing video may not be
+          accepted.
         </p>
       </LegalSection>
 
-      <LegalSection title="6. Order cancellation">
+      <LegalSection title="Replacement Only">
         <p>
-          Before dispatch, you may cancel eligible orders from{' '}
-          <Link to="/profile?section=orders">My Orders</Link> when the products allow customer
-          cancellation. Cancelled unpaid / COD orders restore stock automatically. Prepaid refunds
-          after cancellation follow the refund process above.
+          Once the issue is verified and approved, we will provide a replacement with the same
+          product, subject to availability. Cash refunds will not be provided.
         </p>
       </LegalSection>
 
-      <LegalSection title="7. Contact">
+      <LegalSection title="Used or Altered Products">
         <p>
-          For returns help, reach us through <Link to="/contact">Contact</Link>. Related policies:{' '}
-          <Link to="/shipping-policy">Shipping</Link> · <Link to="/terms">Terms</Link> ·{' '}
-          <Link to="/privacy-policy">Privacy</Link>.
+          Products that have been used, worn, damaged after delivery, or altered in any way will not
+          be eligible for replacement.
         </p>
       </LegalSection>
+
+      <p className="text-muted mb-0">
+        Please contact our customer support team promptly if you receive a damaged or incorrect
+        product.
+      </p>
     </LegalPage>
   );
 }

@@ -613,7 +613,7 @@ export default function AdminConfig() {
   return (
     <>
       <Helmet>
-        <title>Admin Config — YULO Admin</title>
+        <title>Admin Config — Vibhaa Jewellery Admin</title>
       </Helmet>
       <PageHeader
         title="Admin Config"

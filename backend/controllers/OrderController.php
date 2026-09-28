@@ -431,7 +431,7 @@ final class OrderController extends BaseController
         $message = trim((string) ($input['message'] ?? ''));
 
         if ($message === '') {
-            Response::jsonError('Please enter a message for YULO support.', 422);
+            Response::jsonError('Please enter a message for Vibhaa Jewellery support.', 422);
         }
 
         $order = $this->orderModel->findById($orderId, $userId);
@@ -453,7 +453,7 @@ final class OrderController extends BaseController
         Response::jsonSuccess([
             'id' => $id,
             'help_messages' => $this->orderModel->getHelpMessages($orderId),
-        ], 'Message sent to YULO. We will update you here.');
+        ], 'Message sent to Vibhaa Jewellery. We will update you here.');
     }
 
     public function track(array $params): void

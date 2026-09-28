@@ -645,7 +645,7 @@ const Brands = () => {
   return (
     <>
       <Helmet>
-        <title>Brands — YULO Admin</title>
+        <title>Brands — Vibhaa Jewellery Admin</title>
       </Helmet>
       <PageHeader
         title="Brands & Sections"

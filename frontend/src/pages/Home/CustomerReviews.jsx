@@ -91,7 +91,7 @@ export default function CustomerReviews() {
           </div>
         )}
 
-        <p className="customer-reviews__handle text-center mb-0 mt-5">@YULOFASHION</p>
+        <p className="customer-reviews__handle text-center mb-0 mt-5">@vibhaajewellery</p>
       </div>
     </section>
   );

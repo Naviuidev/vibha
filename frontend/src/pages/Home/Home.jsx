@@ -5,9 +5,7 @@ import SEO from '../../components/common/SEO';
 import OfferPopup from '../../components/common/OfferPopup';
 import HeroBanner from './HeroBanner';
 import FeaturedCollection from './FeaturedCollection';
-import NewArrivals from './NewArrivals';
-import Trending from './Trending';
-import BestSellers from './BestSellers';
+import DynamicHomeSections from './DynamicHomeSections';
 import FlashSale from './FlashSale';
 import DealOfDay from './DealOfDay';
 import Categories from './Categories';
@@ -24,14 +22,12 @@ export default function Home() {
 
   return (
     <>
-      <SEO description="YULO — Wear YULO. Look Awesome. Fashion, accessories and more." />
+      <SEO description="Vibhaa Jewellery – All Your Jewellery, One Place." />
       <OfferPopup />
       <HeroBanner />
       <Categories />
       <FeaturedCollection />
-      <NewArrivals />
-      <Trending />
-      <BestSellers />
+      <DynamicHomeSections />
       <FlashSale />
       <DealOfDay />
       <Brands />

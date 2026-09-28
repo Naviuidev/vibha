@@ -198,7 +198,7 @@ final class Order
 
     public function generateOrderNumber(): string
     {
-        return 'YULO-' . date('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(4)), 0, 8));
+        return 'VIBHAA-' . date('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(4)), 0, 8));
     }
 
     public function listByUser(int $userId, int $limit, int $offset): array

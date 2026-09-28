@@ -732,7 +732,7 @@ VALUES (
 INSERT INTO settings (`key`, value, `group`, is_public, updated_at) VALUES
 ('site_name', 'YULO', 'general', 1, NOW()),
 ('site_tagline', 'Your Ultimate Lifestyle Online', 'general', 1, NOW()),
-('support_email', 'support@yulo.com', 'general', 1, NOW()),
+('support_email', 'vibhaahouse@gmail.com', 'general', 1, NOW()),
 ('support_phone', '+91 9876543210', 'general', 1, NOW()),
 ('payment_published_gateway', '', 'payment', 1, NOW()),
 ('favicon_url', '', 'branding', 0, NOW()),
