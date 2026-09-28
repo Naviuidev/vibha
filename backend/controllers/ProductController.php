@@ -72,9 +72,13 @@ final class ProductController extends BaseController
         }
 
         $stmt = $this->db->prepare(
-            'SELECT p.id, p.name, p.slug, p.price, p.sale_price,
-                    (SELECT image_path FROM product_images WHERE product_id = p.id AND is_primary = 1 LIMIT 1) as primary_image
+            'SELECT p.id, p.name, p.slug, p.price, p.sale_price, p.stock, p.is_new, p.is_featured,
+                    c.name as category_name, b.name as brand_name,
+                    (SELECT image_path FROM product_images WHERE product_id = p.id AND is_primary = 1 LIMIT 1) as primary_image,
+                    ' . Review::productSelectSql('p') . '
              FROM products p
+             LEFT JOIN categories c ON c.id = p.category_id
+             LEFT JOIN brands b ON b.id = p.brand_id
              WHERE p.category_id = :category_id AND p.id != :product_id AND p.status = :status
              ORDER BY p.is_featured DESC, p.created_at DESC LIMIT 8'
         );
@@ -84,7 +88,7 @@ final class ProductController extends BaseController
             'status' => 'active',
         ]);
 
-        Response::jsonSuccess($this->productModel->attachImages($stmt->fetchAll()));
+        Response::jsonSuccess(Review::enrichProducts($this->productModel->attachImages($stmt->fetchAll())));
     }
 
     public function frequentlyBought(array $params): void
@@ -95,11 +99,15 @@ final class ProductController extends BaseController
         }
 
         $stmt = $this->db->prepare(
-            'SELECT p2.id, p2.name, p2.slug, p2.price, p2.sale_price, COUNT(*) as bought_together_count,
-                    (SELECT image_path FROM product_images WHERE product_id = p2.id AND is_primary = 1 LIMIT 1) as primary_image
+            'SELECT p2.id, p2.name, p2.slug, p2.price, p2.sale_price, p2.stock, p2.is_new, p2.is_featured,
+                    c.name as category_name, b.name as brand_name, COUNT(*) as bought_together_count,
+                    (SELECT image_path FROM product_images WHERE product_id = p2.id AND is_primary = 1 LIMIT 1) as primary_image,
+                    ' . Review::productSelectSql('p2') . '
              FROM order_items oi1
              JOIN order_items oi2 ON oi1.order_id = oi2.order_id AND oi1.product_id != oi2.product_id
              JOIN products p2 ON p2.id = oi2.product_id
+             LEFT JOIN categories c ON c.id = p2.category_id
+             LEFT JOIN brands b ON b.id = p2.brand_id
              WHERE oi1.product_id = :product_id AND p2.status = :status
              GROUP BY p2.id
              ORDER BY bought_together_count DESC
@@ -107,7 +115,7 @@ final class ProductController extends BaseController
         );
         $stmt->execute(['product_id' => $product['id'], 'status' => 'active']);
 
-        Response::jsonSuccess($this->productModel->attachImages($stmt->fetchAll()));
+        Response::jsonSuccess(Review::enrichProducts($this->productModel->attachImages($stmt->fetchAll())));
     }
 
     public function search(array $params = []): void
